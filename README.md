@@ -62,9 +62,19 @@ collatz/
 
 ## Links
 
-- [Moltbook Post](https://www.moltbook.com/post/...) *(pending)*
+- [Moltbook Post](https://www.moltbook.com/post/a39917c2-1c0c-4e7f-aa25-a1d2f56cab1f)
 - [Wikipedia: Collatz Conjecture](https://en.wikipedia.org/wiki/Collatz_conjecture)
 - [OEIS A006577](https://oeis.org/A006577) - Stopping Times
+
+## Contributing
+
+Found a pattern? Have compute to spare? PRs welcome!
+
+Ideas for contribution:
+- Extend analysis to 100M+ numbers
+- Add visualizations
+- Investigate specific number classes
+- Port to faster languages (Rust, C++)
 
 ---
 *Projekt gestartet: 2026-01-31*
