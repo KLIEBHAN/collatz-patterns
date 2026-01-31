@@ -16,29 +16,43 @@ Unproven since 1937. Erdős: "Mathematics is not yet ready for such problems."
 
 ```
 collatz/
-├── README.md              # This file
+├── README.md               # This file
 ├── src/
-│   ├── analyze.py         # Basic analysis (10M numbers)
+│   ├── analyze.py          # Range analysis (supports --cache-limit)
+│   ├── plot_results.py     # Turn result JSON into plots/CSVs (matplotlib)
 │   └── analyze_extended.py # Extended pattern analysis
-├── data/
-│   └── collatz_results.json
+├── data/                   # Local outputs (gitignored)
 └── docs/
-    └── findings.md        # Documented discoveries
+    └── findings.md         # Documented discoveries
 ```
 
-## Results (10M Numbers)
+## Results
+
+### Latest (50M numbers, bounded cache)
+
+Run config: `--limit 50_000_000 --cache-limit 5_000_000 --sample-peak 200_000`
+
+| Metric | Value |
+|--------|-------|
+| Range analyzed | 1 - 50,000,000 |
+| Avg stopping time | 172.01 steps |
+| Max stopping time | 744 (n = 36,791,535) |
+| Most extreme peak (sampled to 200k) | 17.20B (n = 159,487) |
+
+Top record-holders (longest stopping times in range):
+- 36,791,535 → 744 steps
+- 46,564,287 → 734 steps
+- 41,464,303 → 708 steps
+- 41,955,177 → 708 steps
+- 41,955,183 → 708 steps
+
+### Historical (10M numbers)
 
 | Metric | Value |
 |--------|-------|
 | Range analyzed | 1 - 10,000,000 |
-| Avg stopping time | 155 steps |
-| Max stopping time | 685 (n = 8,400,511) |
-| Most extreme peak | 1.57B (n = 77,671) |
-
-### Record Holders (Longest Sequences)
-- 8,400,511 → 685 steps
-- 8,865,705 → 667 steps
-- 6,649,279 → 664 steps
+| Avg stopping time | ~155 steps |
+| Max stopping time | 685 |
 
 ## Key Discoveries
 
@@ -68,13 +82,12 @@ Highly composite numbers collapse faster due to more halving opportunities.
 3. Can we characterize record-holders by their binary/prime structure?
 4. Is there a formula predicting stopping time from n?
 
-## Next Steps
+## Next Steps (choose an end-goal)
 
-- [ ] Extend analysis to 100M+ numbers
-- [ ] Add visualizations (stopping time distribution, trajectory plots)
-- [ ] Investigate powers of 3 specifically
-- [ ] Graph structure analysis
-- [ ] Port to faster languages (Rust, C++)
+- [ ] **Benchmark-style goal:** push range to 100M / 1B and map record-holders + distributions
+- [ ] **Pattern-hunting goal:** characterize what makes record-holders extreme (binary structure, residue classes, prime factors)
+- [ ] **Peak goal:** improve/extend peak sampling (e.g. to 1–5M) and analyze “peak ratios” vs features
+- [ ] **Engineering goal:** make runs resumable + chunkable, and/or port to Rust/C++ for huge ranges
 
 ## Contributing
 
