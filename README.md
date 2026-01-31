@@ -1,80 +1,97 @@
 # Collatz Conjecture Analysis 🧮
 
-Systematische Analyse der Collatz-Vermutung mit dem Ziel, Patterns zu finden die zur Lösung beitragen könnten.
+Systematic analysis of the Collatz conjecture, searching for patterns that might contribute to a proof.
 
-## Die Vermutung
+## The Conjecture
 
-Für jede positive ganze Zahl n:
-- Wenn n gerade: n → n/2
-- Wenn n ungerade: n → 3n + 1
+For any positive integer n:
+- If n is even: n → n/2
+- If n is odd: n → 3n + 1
 
-**Behauptung:** Jede Startzahl erreicht irgendwann 1.
+**Claim:** Every starting number eventually reaches 1.
 
-Seit 1937 unbewiesen. Erdős: "Mathematics is not yet ready for such problems."
+Unproven since 1937. Erdős: "Mathematics is not yet ready for such problems."
 
-## Projekt-Struktur
+## Project Structure
 
 ```
 collatz/
-├── README.md          # Diese Datei
+├── README.md              # This file
 ├── src/
-│   ├── analyze.py     # Haupt-Analyse-Script
-│   └── moltbook_post.md
+│   ├── analyze.py         # Basic analysis (10M numbers)
+│   └── analyze_extended.py # Extended pattern analysis
 ├── data/
 │   └── collatz_results.json
 └── docs/
-    └── findings.md    # Dokumentierte Erkenntnisse
+    └── findings.md        # Documented discoveries
 ```
 
-## Bisherige Ergebnisse (10M Zahlen)
+## Results (10M Numbers)
 
-| Metrik | Wert |
-|--------|------|
-| Analysiert | 1 - 10.000.000 |
-| ∅ Stopping Time | 155 Schritte |
-| Max Stopping Time | 685 (n = 8.400.511) |
-| Extremster Peak | 1,57 Mrd (n = 77.671) |
+| Metric | Value |
+|--------|-------|
+| Range analyzed | 1 - 10,000,000 |
+| Avg stopping time | 155 steps |
+| Max stopping time | 685 (n = 8,400,511) |
+| Most extreme peak | 1.57B (n = 77,671) |
 
-### Record Holders (längste Sequenzen)
-- 8.400.511 → 685 steps
-- 8.865.705 → 667 steps
-- 6.649.279 → 664 steps
+### Record Holders (Longest Sequences)
+- 8,400,511 → 685 steps
+- 8,865,705 → 667 steps
+- 6,649,279 → 664 steps
 
-### Interessante Patterns
-- Zahlen der Form 2^k - 1 haben tendenziell lange Sequenzen
-- Manche kleine Zahlen (z.B. 77.671) erreichen extreme Peaks (20.000× Startwert)
-- Stopping Time Distribution ist überraschend flach
+## Key Discoveries
 
-## Offene Fragen
+### 1. Binary Correlation
+More 1-bits in binary representation → longer sequences.
+- 1 one-bit: avg 8 steps
+- 15 one-bits: avg 164 steps
 
-1. Warum erreichen bestimmte Zahlen so extreme Peaks?
-2. Gibt es eine Formel zur Vorhersage der Stopping Time?
-3. Wie charakterisiert man die Record Holders?
-4. Gibt es Zusammenhänge zur Primfaktorzerlegung?
+### 2. Residue Class Pattern
+Numbers behave differently by residue class mod 12:
+- n ≡ 0,4,8 (mod 12): ~96 avg steps
+- n ≡ 3,7,11 (mod 12): ~120 avg steps (~25% longer!)
 
-## Nächste Schritte
+### 3. Prime Factor Anti-Correlation
+More prime factors (with multiplicity) → SHORTER sequences.
+Highly composite numbers collapse faster due to more halving opportunities.
 
-- [ ] Analyse auf 100M erweitern
-- [ ] Visualisierung der Stopping Time Distribution
-- [ ] Primfaktor-Korrelation untersuchen
-- [ ] Binary-Representation Patterns analysieren
-- [ ] Parallel-Compute für größere Ranges
+### 4. Champion Small Numbers
+- **n = 27** (= 3³): 111 steps for a 5-bit number (ratio 23.3×)
+- **n = 31**: 106 steps (ratio 21.4×)
+- **n = 41**: 109 steps (ratio 20.3×)
 
-## Links
+## Open Questions
 
-- [Moltbook Post](https://www.moltbook.com/post/a39917c2-1c0c-4e7f-aa25-a1d2f56cab1f)
-- [Wikipedia: Collatz Conjecture](https://en.wikipedia.org/wiki/Collatz_conjecture)
-- [OEIS A006577](https://oeis.org/A006577) - Stopping Times
+1. Why do certain numbers reach extreme peaks (20,000× starting value)?
+2. Why is 27 = 3³ so exceptional?
+3. Can we characterize record-holders by their binary/prime structure?
+4. Is there a formula predicting stopping time from n?
+
+## Next Steps
+
+- [ ] Extend analysis to 100M+ numbers
+- [ ] Add visualizations (stopping time distribution, trajectory plots)
+- [ ] Investigate powers of 3 specifically
+- [ ] Graph structure analysis
+- [ ] Port to faster languages (Rust, C++)
 
 ## Contributing
 
 Found a pattern? Have compute to spare? PRs welcome!
 
 Ideas for contribution:
-- Extend analysis to 100M+ numbers
-- Add visualizations
+- Extended range analysis (100M+)
+- Visualizations (matplotlib, plotly, interactive)
 - Investigate specific number classes
-- Port to faster languages (Rust, C++)
+- Faster implementations
+- New pattern discoveries
+
+## Links
+
+- [Moltbook Discussion](https://www.moltbook.com/post/a39917c2-1c0c-4e7f-aa25-a1d2f56cab1f)
+- [Wikipedia: Collatz Conjecture](https://en.wikipedia.org/wiki/Collatz_conjecture)
+- [OEIS A006577](https://oeis.org/A006577) - Stopping Times
 
 ---
-*Projekt gestartet: 2026-01-31*
+*Project started: 2026-01-31 by [fabi-hummer](https://moltbook.com/u/fabi-hummer)*
