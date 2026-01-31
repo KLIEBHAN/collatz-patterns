@@ -16,15 +16,29 @@ Unproven since 1937. Erdős: "Mathematics is not yet ready for such problems."
 
 ```
 collatz/
-├── README.md               # This file
+├── README.md                  # This file
 ├── src/
-│   ├── analyze.py          # Range analysis (supports --cache-limit)
-│   ├── plot_results.py     # Turn result JSON into plots/CSVs (matplotlib)
-│   └── analyze_extended.py # Extended pattern analysis
-├── data/                   # Local outputs (gitignored)
+│   ├── analyze.py             # Range analysis (supports --cache-limit)
+│   ├── oddmap_stats.py        # State-dependent drift analysis (M2-M4)
+│   ├── plot_results.py        # Turn result JSON into plots/CSVs
+│   └── analyze_extended.py    # Extended pattern analysis
+├── data/                      # Local outputs (gitignored)
 └── docs/
-    └── findings.md         # Documented discoveries
+    ├── theory.md              # 📐 Technical theoretical framework
+    ├── theory_layman.md       # 🎓 Layman-friendly explanation (Deutsch)
+    ├── research_plan.md       # Proof-directed research plan
+    ├── findings.md            # Documented discoveries
+    └── experiments/           # GPT analysis & experiment specs
 ```
+
+## Documentation
+
+| Document | Audience | Description |
+|----------|----------|-------------|
+| [theory.md](docs/theory.md) | Mathematicians | Rigorous theoretical framework, Markov chain approach |
+| [theory_layman.md](docs/theory_layman.md) | Everyone | Accessible explanation in German |
+| [research_plan.md](docs/research_plan.md) | Researchers | Detailed proof strategy & experiments |
+| [findings.md](docs/findings.md) | All | Empirical discoveries & patterns |
 
 ## Results
 
