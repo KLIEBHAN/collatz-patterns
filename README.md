@@ -101,16 +101,17 @@ Within-lift bias functions:
 
 The Fourier spectrum of β_r captures which base frequencies dominate.
 
-### The Fixed Point Mechanism
+### The Fixed Point Mechanism — RESOLVED ✅
 
-The a=2 branch f_2(x) = (3x+1)/4 has fixed point x=1.
+**UPDATE (2026-02-01):** GPT analysis revealed this is **absorption contamination**, not a 3-adic obstruction!
 
-When Syracuse visits b ≡ 1 (mod 3^k):
-- Many visits come from actual n = 1 (or small multiples)
-- These stay at 1 via the a=2 branch
-- Result: P(a=2|b=1) ≈ 0.74 instead of 0.25
+The huge P(a=2|b=1) = 0.74 is explained by a **mixture model**:
+- ~65% of visits to b≡1 come from actual n=1 (absorbing state)
+- Predicted: P(a=2|b=1) = 0.25 + 0.75×0.65 = 0.74 ✓
 
-**This is the smoking gun for why β_1(b) peaks at b=1.**
+**The b=25, 17, 49 pattern:** All ≡ 1 (mod 8) — this is a **2-adic** effect!
+
+**Implication:** The true 3-adic mixing obstruction may be smaller than measured. Need "killed/regenerative" sampling to separate absorption from mixing.
 
 ## Proof Roadmap
 

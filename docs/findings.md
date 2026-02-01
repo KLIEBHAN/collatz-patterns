@@ -513,6 +513,61 @@ This completely explains why β₁(b) is largest at b=1:
 
 ---
 
+## 2026-02-01: GPT Analysis — b=1 is ABSORPTION CONTAMINATION 🎯
+
+### The Revelation
+
+GPT (17m 57s deep thinking) identified that our b=1 finding is **not a 3-adic obstruction** but rather **absorption contamination**:
+
+> "Your b=1 finding is real and important, but it's best understood as: **'my sampling measure is not quasi-stationary; it contains lots of absorbed time.'**"
+
+### The Mixture Model Proof
+
+Let q = Pr(n=1 | b=1) — probability that a visit to b≡1 is actually from n=1.
+
+**Prediction:**
+- P(a=2|b=1) = q×1 + (1-q)×0.25 = 0.25 + 0.75q
+
+**Observed:** P(a=2|b=1) = 0.7391
+
+**Solve:** q = (0.7391 - 0.25) / 0.75 = **0.6521**
+
+**Verify with a=1:**
+- Predicted: P(a=1|b=1) = (1-q)×0.5 = 0.1739
+- Observed: **0.1749** ← Almost perfect match!
+
+**Conclusion:** ~65% of our b=1 samples are from the literal absorbing state n=1.
+
+### b=25, 17, 49 Explained
+
+These all have elevated P(a=2|b) because:
+- 1, 17, 25, 49 ≡ **1 (mod 8)**
+- For odd n, a(n)=2 exactly when n ≡ 1 (mod 8)
+- This is a **2-adic** boundary effect, not 3-adic!
+
+### The β↔Fourier Non-Proportionality
+
+GPT explained: It's a **missing twist factor** caused by the cyclic extension structure r_k = 3r_{k-1}.
+
+The correct formula involves a twist by the kernel character, which we didn't account for.
+
+### Recommended Next Steps
+
+1. **Killed/Regenerative Sampling:** Remove absorption — stop counting when n ≤ B
+2. **Twist-Corrected β→Fourier:** Implement the exact formula with twist factor
+3. **Re-run Analysis:** Then TV, β-energy, Fourier targets will show true 3-adic structure
+4. **k=8 Only After Decontamination:** Otherwise we just measure absorption artifacts
+
+### Implications for Proof
+
+> "This is not an 'obstruction' to descent. It's the system telling you, loudly, 'I hit the goal state and stopped.'"
+
+The b=1 effect is actually **good news** — it means the true 3-adic mixing obstruction may be smaller than we measured!
+
+**Full GPT response:** `docs/experiments/gpt-b1-analysis-response-2026-02-01.md`
+
+---
+
 ## Conjectures (Unproven)
 
 1. **Bit Density Conjecture:** For numbers of equal bit-length, stopping time correlates positively with Hamming weight (number of 1-bits).
