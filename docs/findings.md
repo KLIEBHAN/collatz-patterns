@@ -1133,46 +1133,90 @@ If this holds → uniform negative drift. Proving it for all n is as hard as Col
 
 ---
 
-## 🎯 2026-02-01: Attack Vectors for Key Lemma (K)
+## 🎯 2026-02-01: Attack Vectors for Key Lemma (K) — Consolidated
 
-### The Clean Reduction: Recharge Bound (RB)
+### ⚠️ Critical Question: Is (K) Even True?
 
-Since a=1 ⟺ r≥2, and r drops by 1 each a=1 step:
+**(K) is NOT obviously implied by Collatz!**
+
+Even if every orbit reaches 1, orbits could have:
+- Long windows with a=1 density ~0.99
+- Compensated by rare huge a values
+
+**Recommendation:** Falsification attempt before investing in proof!
+
+### The Fuel/Credit Decomposition
+
+Define h(n) := ν₂(n+1). Then:
+- a(n) = 1 ⟺ h(n) ≥ 2
+- If a(n) = 1: **h(T(n)) = h(n) - 1** (exact!)
+- **h(n) - 1 is FUEL** — each a=1 step burns 1 fuel
+
+**Once h(n) = k ≥ 2, next k-1 steps are FORCED to be a=1!**
+
+### The Atomic Hard Question
+
+At reset times where h(nᵢ) = 1, define next fuel: Kᵢ := h(nᵢ₊₁)
+
+> **When nᵢ ≡ 1 (mod 4), how often can T(nᵢ)+1 be divisible by large 2^k?**
+
+This is the "refueling frequency" problem.
+
+### The Clean Reduction
+
 ```
-#{a=1} ≤ (r₀ - 1) + Σ Δᵢ⁺ + correction
+#{a=1 steps} ≤ (initial fuel) + Σ(refuels) + correction
 ```
 
-**So (K) follows from Recharge Bound (RB):**
-```
-Σ Δᵢ⁺ ≤ θt + C·log n
-```
+**(K) follows from Recharge Bound (RB):** Σ Δᵢ⁺ ≤ θt + C·log n
 
-### The Mathematical Lever: LTE
+### Mathematical Lever: LTE
 
 ```
 ν₂(3^m - 1) = 2 + ν₂(m)  for m even
 ```
 
-Order of 3 mod 2^R is 2^{R-2}. Deep returns need exponential time gaps!
+Order of 3 mod 2^R is 2^{R-2} → deep returns need exponential time!
 
-### The Sharp Target: Return-Time vs Depth (RTD)
+### RTD Lemma (Sharp Target)
 
-> **RTD Lemma:** If rᵢ ≥ R, then next j with rⱼ ≥ R satisfies j - i ≥ c·2^R - C
+> If rᵢ ≥ R, then next rⱼ ≥ R requires j - i ≥ c·2^R - C
 
-**If RTD holds → (K) follows directly!**
+If RTD holds → (K) follows directly!
 
-### The Test
+### Weaker (More Realistic) Targets
 
-> Can you convert "deep return to -1" into a forced congruence with exponential time gap?
+| Original | Weaker Alternative |
+|----------|-------------------|
+| C·log n | C·log(max trajectory) |
+| Count a=1 | Count fuel creation |
+| Uniform θ | Θ_k ≈ 2^{-(k-1)} per level |
 
-That's the wall in its most concrete, testable form.
+### Why Every Technique Fails
 
-### What's Provable Now
+| Technique | Failure Mode |
+|-----------|--------------|
+| Ergodic/ℤ₂ | Cannot rule out exceptional points |
+| Tao-style | Allows sparse exceptional sets |
+| Baker | Controls cycles, not transients |
+| Modular | "Rare on average" ≠ "rare per orbit" |
 
-| Statement | Status |
-|-----------|--------|
-| Almost-all (K) | ✅ Within reach |
-| RTD for fixed R | 🟡 Test with LTE |
-| Uniform RTD | ❌ The wall |
+### Status Table
 
-**Full analysis:** `docs/experiments/gpt-key-lemma-attack-vectors-2026-02-01.md`
+| Target | Status | Notes |
+|--------|--------|-------|
+| Falsify (K) | 🔴 **DO FIRST** | Search repeated large refuels |
+| Almost-all (K) | ✅ Within reach | Tao-style |
+| RTD fixed R | 🟡 Test with LTE | Promising |
+| Uniform RTD | ❌ The wall | As hard as Collatz |
+| Weaker log(max) | 🟢 Fallback | More realistic |
+
+### Recommended Strategy
+
+1. **Phase 1:** Falsification — search for (K) counterexamples
+2. **Phase 2:** If (K) survives — try RTD with LTE
+3. **Phase 3:** Fallback — weaken to log(max trajectory)
+
+**Full analysis:**
+- `docs/experiments/gpt-key-lemma-attack-vectors-2026-02-01.md`
+- `docs/experiments/gpt-key-lemma-deep-analysis-2026-02-01.md`
