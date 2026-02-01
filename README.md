@@ -14,20 +14,27 @@ Unproven since 1937. Erdős: "Mathematics is not yet ready for such problems."
 
 ## Current Status (2026-02-01)
 
-### 🔥 MAJOR DISCOVERY: Fixed Point Structure
+### 🔥 BREAKTHROUGH: Absorption Contamination Identified & Removed
 
-**The obstruction to proving Collatz is not random — it's the fixed point structure!**
+**Initial finding:** b=1 (mod 3^k) showed P(a=2|b=1) = 0.74 (vs ideal 0.25)
 
-We discovered that b=1 (mod 3^k) has massively elevated P(a=2):
+**GPT Analysis (18 min deep thinking):** This is **absorption contamination**, not a 3-adic obstruction!
+- ~65% of b=1 visits come from actual n=1 (the absorbing state)
+- Mixture model perfectly predicts the observed distribution
 
-| b | P(a=2\|b) | Ideal | Deviation |
-|---|-----------|-------|-----------|
-| **1** | **0.7391** | 0.25 | **+0.489** (3× ideal!) |
-| 25 | 0.6218 | 0.25 | +0.372 |
-| 17 | 0.5892 | 0.25 | +0.339 |
-| 242 (≡-1) | 0.2425 | 0.25 | ~0 |
+**Killed/Regenerative Sampling Results:**
 
-**Why?** The a=2 branch x → (3x+1)/4 has fixed point x=1. Visits to b≡1 often come from actual n=1, which stays at 1 via a=2.
+| k | TV (contaminated) | TV (killed) | Improvement |
+|---|-------------------|-------------|-------------|
+| 5 | 5.2% | **1.32%** | 4× better |
+| 6 | 8.3% | **2.88%** | 3× better |
+
+| Metric | Before | After Killing |
+|--------|--------|---------------|
+| P(a=2\|b=1) | 0.7391 | **0.2319** (near ideal!) |
+| b=1 rank in β₁ | #1 | #2 |
+
+**The true 3-adic mixing obstruction is ~3× smaller than originally measured!**
 
 ### Fourier Analysis Summary (k=3 through k=7)
 
@@ -101,17 +108,21 @@ Within-lift bias functions:
 
 The Fourier spectrum of β_r captures which base frequencies dominate.
 
-### The Fixed Point Mechanism — RESOLVED ✅
+### The Absorption Contamination Story
 
-**UPDATE (2026-02-01):** GPT analysis revealed this is **absorption contamination**, not a 3-adic obstruction!
+**Original observation:** P(a=2|b=1) = 0.74 seemed like a "fixed point obstruction"
 
-The huge P(a=2|b=1) = 0.74 is explained by a **mixture model**:
-- ~65% of visits to b≡1 come from actual n=1 (absorbing state)
-- Predicted: P(a=2|b=1) = 0.25 + 0.75×0.65 = 0.74 ✓
+**GPT's insight:** It's actually absorption contamination
+- The a=2 branch has fixed point x=1
+- Naive sampling includes time spent at the literal absorbing state n=1
+- This contaminates the b≡1 residue class
 
-**The b=25, 17, 49 pattern:** All ≡ 1 (mod 8) — this is a **2-adic** effect!
+**Solution:** Killed/regenerative sampling (stop counting when n ≤ B)
+- Removes absorption artifacts
+- Reveals the true 3-adic structure
+- **Result:** TV distances drop by factor of 3-4×
 
-**Implication:** The true 3-adic mixing obstruction may be smaller than measured. Need "killed/regenerative" sampling to separate absorption from mixing.
+**The b=25, 17, 49 pattern:** All ≡ 1 (mod 8) — a **2-adic** boundary effect, not 3-adic!
 
 ## Proof Roadmap
 
