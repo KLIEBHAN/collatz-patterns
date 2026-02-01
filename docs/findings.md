@@ -120,6 +120,63 @@ Relative to their bit-length, these are exceptionally long:
 
 ---
 
+## 2026-02-01: Markov Analysis & ψ-Correction Critical Review
+
+### Background
+
+Shifted approach from "push N" statistics to **drift/mixing/finite-state reduction** using the accelerated odd map (Syracuse): T(n) = (3n+1)/2^{a(n)} where a(n) = v₂(3n+1).
+
+Analysis up to 50M with state reduction mod 3^8 = 6561.
+
+### The Outlier Problem
+
+During ψ-correction analysis, state **6397** showed anomalous behavior:
+- Positive corrected drift: **+0.180** (all others negative)
+- Zero visits in time window t=34..50
+- 98.5% of visits occurred at t < 34
+
+### Resolution: Poisson Artifact ✅
+
+**Root cause:** The "+0.180" was a **data artifact**, not structural:
+- 0-visit states have undefined rows in transition matrix P̂
+- Poisson solver produces arbitrary values for empty rows
+- State with maximum drift being a zero-visit state = textbook artifact
+
+### Forced-Start Validation
+
+Applied **Forced-Start methodology** to directly sample state 6397:
+- Sample n ≡ 6397 (mod 6561) with random large quotients
+- Observed a(n) distribution: ~49.8% a=1, ~25.3% a=2 (geometric ✅)
+- Measured g(6397) = **strongly negative** (consistent with other states)
+
+### Critical Review Findings (ChatGPT 5.2 Pro, 22m analysis)
+
+**Methodology: ✅ Correct**
+- Forced-Start is valid because 6561 = 3^8 is odd → bijection mod 2^m preserved
+- Geometric a(n) distribution confirms no 2-adic bias
+
+**Status: Strong Evidence, Not Proof**
+- ψ-correction empirically validated
+- All states now show negative corrected drift
+- BUT: P̂, ĝ, ψ are estimated, not exact
+- Missing: Why can deterministic Syracuse be approximated by finite Markov reduction?
+
+### Roadmap to Rigorous Proof
+
+1. **Level 1 (Achievable):** Build exact P_k with P(a=m) = 2^(-m), prove drift lemma
+2. **Level 2 (Difficult):** Control model-to-reality gap (Fourier methods)
+3. **Level 3 (Achievable if L2 done):** Drift + concentration → descent proof
+
+### Recommended Next Steps
+
+1. Extend Forced-Start to all 1784 low-count states (N_s < 200)
+2. Use large BigInt starts (256-bit) for long-horizon sampling
+3. Build exact rational P_k model as proof object
+
+**Full documentation:** `docs/experiments/critical-review-forced-start.md`
+
+---
+
 ## Conjectures (Unproven)
 
 1. **Bit Density Conjecture:** For numbers of equal bit-length, stopping time correlates positively with Hamming weight (number of 1-bits).

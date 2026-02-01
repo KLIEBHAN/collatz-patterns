@@ -129,6 +129,24 @@ The "extended run" (t_burn=200, t_max=300) measured the **trivial fixed point n=
 
 See [outlier-resolved-2026-02-01.md](docs/experiments/outlier-resolved-2026-02-01.md) for details.
 
+### Critical Review (2026-02-01)
+
+Independent verification via ChatGPT 5.2 Pro (22 min analysis):
+
+| Question | Answer |
+|----------|--------|
+| Is Forced-Start methodology correct? | ✅ **Yes** — geometric a(n) distribution confirms no 2-adic bias |
+| Was +0.180 a real problem? | ❌ **No** — classic Poisson artifact from 0-visit state |
+| Can we claim ψ-correction "works"? | 🟡 **Strong evidence**, not proof |
+| What's missing for proof? | Exact P_k model, model-to-reality gap bounds |
+
+**Next steps:**
+1. Extend Forced-Start to all 1784 low-count states
+2. Build exact rational P_k model as proof object
+3. Use 256-bit BigInt starts for long-horizon sampling
+
+See [critical-review-forced-start.md](docs/experiments/critical-review-forced-start.md) for full analysis.
+
 ## Open Questions
 
 1. Why do certain numbers reach extreme peaks (20,000× starting value)?
