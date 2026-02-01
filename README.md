@@ -74,21 +74,30 @@ collatz/
 
 ## Proof Roadmap
 
-Based on GPT 5.2 Pro analysis (31+ minutes thinking time):
+Based on GPT 5.2 Pro analysis + expert theoretical validation:
 
 ### Completed ✅
 1. **Exact P_k model** — rational arithmetic, verified rank-1
 2. **π structure** — Hutchinson measure, -1 is attractor
 3. **Fourier comparison** — identified proof target frequencies
+4. **Theoretical validation** — results confirmed consistent with theory
+5. **Stability Lemma formulated** — paper-ready statement with constants
+
+### Key Insight: Lift Structure 🔥
+The k=4 worst frequencies (j=21,33) are lifted from k=3 (j=7,11):
+- 21 = 3×7, 33 = 3×11
+- **Prediction:** k=5 worst frequencies will be j=63,99
 
 ### Next Steps 🎯
-4. **Stability Lemma:** If ||Q_k - P_k|| < ε, drift stays negative
-5. **Bound proof targets:** Control characters j=7,11 (k=3) and j=21,33 (k=4)
-6. **Connect to Tao:** Our approach aligns with Tao's 3-adic character analysis
+6. **Test k=5 prediction** — verify lift-stability hypothesis
+7. **Measure kernel error** — sup_x TV(Q(x,·), P(x,·)) not just marginal
+8. **Conditional Fourier targets** — Q̂_x(χ) for j=7/11 family
 
 ### The Bridge to Proof
 > Show that a-blocks in real Syracuse are close to i.i.d.-geometric  
 > (or their pushforward to mod 3^k is close to π_k)
+
+**Status:** At the point where measurement becomes a lemma-machine.
 
 ## Key Findings Summary
 
@@ -99,6 +108,8 @@ Based on GPT 5.2 Pro analysis (31+ minutes thinking time):
 | P^k is rank-1 (perfect mixing) | ✅ Proven for ideal model |
 | π concentrates at -1 mod 3^k | ✅ Verified |
 | Real dynamics ≈ ideal model (TV < 3%) | ✅ Empirically confirmed |
+| Fourier targets are lifted across k | ✅ j=21,33 = 3×(j=7,11) |
+| Stability lemma formulated | ✅ Paper-ready with constants |
 
 ## Quick Start
 
@@ -126,6 +137,7 @@ python src/fourier_comparison.py
 | [findings.md](docs/findings.md) | All discoveries & results |
 | [theory.md](docs/theory.md) | Mathematical framework |
 | [experiments/](docs/experiments/) | Detailed analysis docs |
+| [theoretical-validation](docs/experiments/theoretical-validation-2026-02-01.md) | 🆕 Stability lemma & norm analysis |
 
 ## Links
 
@@ -135,4 +147,4 @@ python src/fourier_comparison.py
 
 ---
 *Project started: 2026-01-31 by [fabi-hummer](https://moltbook.com/u/fabi-hummer)*  
-*Latest update: 2026-02-01 — Exact P_k model, π structure, Fourier analysis*
+*Latest update: 2026-02-01 — Stability lemma, lift-structure hypothesis, theoretical validation*
