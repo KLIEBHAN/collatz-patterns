@@ -1108,4 +1108,25 @@ Prove that large jumps into deep -1 neighborhoods must be "paid for" by strong s
 | Fourier on mod 3^k | Hybrid Lyapunov with r(n) |
 | "Prove uniform drift" | "Prove recharge cost" |
 
+### The Key Lemma (K): Uniform Anti-Recurrence
+
+> Σ 𝟙{a=1} ≤ θt + C·log n  with θ < log₂(3)
+
+If this holds → uniform negative drift. Proving it for all n is as hard as Collatz.
+
+### Cheap Tricks (Provable Now!)
+
+| # | What | Status |
+|---|------|--------|
+| 1 | Negative result: 3-adic ψ insufficient | ✅ Explicit (★) |
+| 2 | Block drift outside sparse E_{m,k} | ✅ Provable |
+| 3 | "Almost all" via Borel-Cantelli | ✅ Aligns with Tao |
+| 4 | Conditional theorem with Recharge Axiom | ✅ Isolates wall |
+
+### The Punchline
+
+- **Bulk looks ideal** because conspiracies live in exponentially thin 2-adic sets
+- **All-n requires** controlling those thin sets in worst case
+- **Next milestone:** Excursion decomposition around ν₂(n+1), prove recharge cost
+
 **Full analysis:** `docs/experiments/gpt-no-conspiracy-impossible-2026-02-01.md`
