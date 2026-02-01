@@ -1,75 +1,110 @@
-# Collatz Conjecture: A Conditional Reduction 🧮
+# Collatz Conjecture: Proof-Directed Analysis 🧮
 
-**We reduce the Collatz conjecture to a single "No Conspiracy" lemma.**
+**We proved that pure 3-adic methods CANNOT solve Collatz — and found where the real obstruction lives.**
 
-If you can prove that arithmetic doesn't conspire against descent, our Foster-Lyapunov framework completes the proof. We provide empirical evidence that no such conspiracy exists — but proving it remains the hard open problem.
+This repository documents a systematic proof-directed investigation into the Collatz conjecture, including both positive results (what works) and negative results (what provably cannot work).
 
 ---
 
-## What We Found
+## 🔥 Key Discovery (2026-02-01)
 
-Using Markov chain analysis on 3-adic residues, we discovered a clear phase structure:
+### What We Proved
 
-| Phase | n Range | Behavior |
-|-------|---------|----------|
-| 🧊 **Crystalline** | ≤ 10 | Deterministic terminal funnel |
+**A pure 3-adic Lyapunov function V(n) = log n + ψ(n mod 3^k) CANNOT provide uniform descent.**
+
+There exists an explicit infinite family of counterexamples:
+```
+n ≡ -1 (mod 3^k)  AND  n ≡ -1 (mod 2^{m+1})
+```
+
+For these n:
+1. All first m steps have a=1 (forced by 2-adic structure)
+2. Growth by (3/2)^m
+3. 3-adic residue stays at -1 → ψ cancels
+4. V increases instead of decreasing
+
+**The obstruction is 2-ADIC, not 3-adic!**
+
+---
+
+## The Real Structure
+
+### The Fuel Metaphor
+
+Define h(n) := ν₂(n+1) (2-adic valuation of n+1). Then:
+
+- **a(n) = 1 ⟺ h(n) ≥ 2** (in the "bad" expanding regime)
+- **h(T(n)) = h(n) - 1** when a=1 (exact countdown!)
+- **h(n) - 1 is "fuel"** — each a=1 step burns one unit
+
+Once h(n) = k ≥ 2, the next **k-1 steps are FORCED to be a=1**.
+
+### The Three-Phase Model
+
+| Phase | Boundary B | Behavior |
+|-------|------------|----------|
+| 🧊 **Crystalline** | ≤ 10 | Deterministic, 73% defects |
 | 🌊 **Transition** | ~100 | Structure dissolves |
-| 💧 **Liquid** | ≥ 1000 | **Bulk = Ideal** (indistinguishable from random) |
+| 💧 **Liquid** | ≥ 1000 | **Bulk = Ideal** (noise only) |
 
-The "Collatz structure" only exists at small n. For large n, trajectories behave exactly like an idealized stochastic model.
-
----
-
-## The Reduction
-
-We've transformed Collatz from:
-> "Does every trajectory reach 1?"
-
-To:
-> "Can arithmetic conspire to produce infinite bad-block chains?"
-
-### Theorem A (Our Contribution) ✅
-
-**If** the deterministic Syracuse map satisfies a uniform no-conspiracy condition, **then** the Lyapunov function V(n) = log n + ψ(n mod 3^k) proves descent to a finite set, which can be verified computationally.
-
-### Theorem B (The Open Problem) ❓
-
-**Prove** the uniform no-conspiracy condition: that no starting integer can produce an infinite chain of low-valuation steps that defeats the expected negative drift.
-
-**📖 [Full theoretical framework →](docs/theory.md)**
+The "Collatz structure" exists only at small n. In bulk, trajectories are statistically ideal.
 
 ---
 
-## The No-Conspiracy Lemma (What's Missing)
+## Current Status
 
-Formally, we need:
+### What We Know
 
-> **Uniform Block-Drift Lemma:** There exist m ≥ 1, k ≥ 1, δ > 0, B₀ such that for **every** odd n > B₀:
-> 
-> V(T^m(n)) - V(n) ≤ -δ
+| Result | Status |
+|--------|--------|
+| 3-adic ψ alone insufficient | ✅ **Proven** (explicit counterexamples) |
+| Obstruction is 2-adic | ✅ **Identified** |
+| Bulk behaves ideally | ✅ **Measured** (TV → 0 as 1/√N) |
+| Fuel countdown structure | ✅ **Exact** (h decrements by 1) |
 
-Our empirical evidence strongly suggests this holds. But "holds on average" ≠ "holds for every n". The gap is exactly the Collatz conjecture.
+### The Wall
+
+**RTD Lemma (Return-Time vs Depth):**
+> If r_i ≥ R, then the next j with r_j ≥ R satisfies j - i ≥ c·2^R - C
+
+This would prove that deep 2-adic returns are exponentially spaced, directly controlling the "fuel refill" rate.
+
+**Mathematical lever:** LTE (Lifting the Exponent) — the order of 3 mod 2^R is 2^{R-2}.
+
+### Why "Key Lemma (K)" is Weak
+
+We tested the cumulative bound:
+```
+Σ 𝟙{a=1} ≤ θt + C·log₂(n)
+```
+
+**Finding:** (K) holds empirically with C ≈ 2.42, BUT:
+- Actual slope (~0.50) > allowed slope (0.415)
+- Orbits "sin" but "die before judgment"
+- Break-even at t* ≈ 28·log₂(n), orbits terminate earlier
+- **(K) depends on termination — circular for a proof!**
 
 ---
 
-## Empirical Evidence
+## Repository Structure
 
-### Noise Floor Test (n > 100,000)
-
-| Samples | TV Distance | TV × √N |
-|---------|-------------|---------|
-| 100k | 2.54% | 8.03 |
-| 400k | 1.32% | 8.35 |
-| 800k | 0.91% | 8.14 |
-
-TV × √N constant → deviation is sampling noise, not structure.
-
-### Tao Comparison
-
-| Approach | Target | Status |
-|----------|--------|--------|
-| Tao (2019) | "Almost all" (log density) | ✅ Proven |
-| Our framework | "All n > B₀" | Reduces to No-Conspiracy Lemma |
+```
+collatz-patterns/
+├── src/
+│   ├── refuel_test.py          # Visual refueling analysis
+│   ├── test_lemma_k.py         # Lemma (K) verification
+│   ├── noise_floor_test.py     # Bulk = ideal test
+│   └── ...
+├── docs/
+│   ├── findings.md             # Complete experimental log
+│   ├── theory.md               # Mathematical framework
+│   └── experiments/            # Detailed analyses
+│       ├── gpt-no-conspiracy-impossible-*.md
+│       ├── gpt-key-lemma-attack-vectors-*.md
+│       ├── gpt-key-lemma-deep-analysis-*.md
+│       └── lemma-k-empirical-analysis-*.md
+└── data/                       # Generated plots & results
+```
 
 ---
 
@@ -81,56 +116,64 @@ cd collatz-patterns
 python -m venv .venv && source .venv/bin/activate
 pip install numpy scipy matplotlib
 
-python src/noise_floor_test.py           # Verify bulk is noise
-python src/finite_verification.py        # Verify small set
+# Key experiments
+python src/test_lemma_k.py       # Test Lemma (K)
+python src/refuel_test.py        # Visualize refueling
+python src/noise_floor_test.py   # Verify bulk is noise
 ```
 
 ---
 
-## Documentation
+## The Path Forward
 
-| Document | Description |
-|----------|-------------|
-| [theory.md](docs/theory.md) | Mathematical framework + No-Conspiracy Lemma |
-| [findings.md](docs/findings.md) | Complete experimental log |
-| [Critical Assessment](docs/experiments/gpt-critical-assessment-2026-02-01.md) | Why this is a reduction, not a proof |
-| [Foster-Lyapunov](docs/experiments/gpt-foster-lyapunov-framework-2026-02-01.md) | Paper-ready framework |
+### Recommended Strategy
+
+1. ~~Falsify (K)~~ ✅ Done — holds empirically
+2. ⚠️ (K) is weak — depends on termination
+3. 🎯 **RTD Lemma** — the correct target
+4. Use **LTE** as mathematical lever
+
+### What Would Constitute Progress
+
+- Prove RTD for small fixed R (e.g., R=3,4)
+- Formalize the LTE connection to return times
+- Prove "almost all" RTD (weaker but rigorous)
+- Find explicit counterexamples to RTD (if it's false)
+
+---
+
+## Key Insight
+
+> "The Collatz problem is not about 3-adic mixing — it's about whether 2-adic neighborhoods of -1 can be visited too frequently by integer orbits."
+
+The 2-adic extension of Collatz is conjugate to a Bernoulli shift (maximally chaotic). The hard part is showing that **positive integers** — a measure-zero subset — cannot realize the pathological patterns that exist in the full 2-adic space.
+
+---
+
+## References
+
+- [Tao (2019): Almost All Collatz Orbits Attain Almost Bounded Values](https://arxiv.org/abs/1909.03562)
+- [Lagarias: The 3x+1 Problem — An Annotated Bibliography](https://arxiv.org/abs/math/0309224)
+- [Bernstein: The 3x+1 Map in Z_2](https://cr.yp.to/papers/collatz.pdf)
 
 ---
 
 ## What This Is (And Isn't)
 
 ### ✅ What it IS:
-- A **conditional proof**: "If No-Conspiracy, then Collatz"
-- A **proof scaffold** that identifies exactly which lemma would suffice
-- **Strong empirical evidence** that the lemma likely holds
-- A **transformation** of the problem into a precise mathematical statement
+- A **negative result**: Pure 3-adic methods provably fail
+- **Identification** of the true obstruction (2-adic)
+- A **proof scaffold** with the missing brick precisely identified
+- **Strong empirical evidence** supporting the framework
 
 ### ❌ What it is NOT:
-- A proof of Collatz for all n
+- A proof of Collatz
+- A claim that the problem is solved
 - A bypass of the core number-theoretic difficulty
-- A claim that statistics can solve a deterministic problem
-
----
-
-## The Demon Analogy
-
-Think of it as a game against an adversary:
-
-- **Our simulations:** Random starting values. The demon loses on average.
-- **A proof:** The demon picks the starting value maliciously. He searches for the one number that breaks our drift condition.
-- **No-Conspiracy Lemma:** Proves the demon has no winning move — arithmetic forbids it.
-
-Simulations can't defeat the demon because he hides in the gaps of probability.
-
----
-
-## Links
-
-- [Tao's "Almost All" Paper (2019)](https://arxiv.org/abs/1909.03562)
-- [Lagarias Survey](https://arxiv.org/abs/math/0309224)
 
 ---
 
 *Started: 2026-01-31 | Latest: 2026-02-01*  
-*By [@KLIEBHAN](https://github.com/KLIEBHAN) with AI assistance*
+*By [@KLIEBHAN](https://github.com/KLIEBHAN) with AI assistance (Claude + GPT)*
+
+🦞 *"Sometimes proving something CANNOT work is the breakthrough."*

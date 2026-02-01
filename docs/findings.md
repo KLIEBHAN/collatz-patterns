@@ -1205,18 +1205,32 @@ If RTD holds → (K) follows directly!
 
 | Target | Status | Notes |
 |--------|--------|-------|
-| Falsify (K) | 🔴 **DO FIRST** | Search repeated large refuels |
+| ~~Falsify (K)~~ | ✅ Done | Holds empirically with C≈2.42 |
+| (K) as proof target | ⚠️ **Weak** | Buffer effect, not intrinsic |
 | Almost-all (K) | ✅ Within reach | Tao-style |
-| RTD fixed R | 🟡 Test with LTE | Promising |
+| **RTD** | 🎯 **Best target** | Fixes slope directly |
 | Uniform RTD | ❌ The wall | As hard as Collatz |
-| Weaker log(max) | 🟢 Fallback | More realistic |
 
-### Recommended Strategy
+### The Buffer Effect Discovery
 
-1. **Phase 1:** Falsification — search for (K) counterexamples
-2. **Phase 2:** If (K) survives — try RTD with LTE
-3. **Phase 3:** Fallback — weaken to log(max trajectory)
+**(K) holds NOT because dynamics are good, but because orbits DIE before going bankrupt!**
+
+| Quantity | Value |
+|----------|-------|
+| Allowed slope θ | 0.415 |
+| Actual slope | ~0.50 |
+| Break-even | t* ≈ 28·log₂(n) |
+| Typical orbit | O(log n) to O(log² n) |
+
+Orbits "sin" (wrong slope) but "die before judgment" (terminate before violating bound).
+
+### Recommended Strategy (Updated)
+
+1. ~~Phase 1: Falsification~~ ✅ Done — (K) holds empirically
+2. **Phase 2: RTD** — The correct target! Fixes slope, no buffer dependency
+3. **Phase 3:** If RTD fails — weaken to log(max trajectory)
 
 **Full analysis:**
 - `docs/experiments/gpt-key-lemma-attack-vectors-2026-02-01.md`
 - `docs/experiments/gpt-key-lemma-deep-analysis-2026-02-01.md`
+- `docs/experiments/lemma-k-empirical-analysis-2026-02-01.md`
