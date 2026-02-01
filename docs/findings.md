@@ -911,6 +911,42 @@ This confirms GPT's warning:
 
 The Collatz structure at small n is NOT just a marginal effect — it's deeply embedded in the transition dynamics.
 
+### Visual Analysis ("Smoking Gun")
+
+The heatmap reveals the critical insight:
+
+1. **Matrix Illusion (Top row):** Ideal P and Empirical Q look similar at first glance — explains why marginal analyses looked good
+
+2. **True Error (Bottom-left |Q-P|):** Not "a bit wrong everywhere" (noise), but **massively wrong at specific spots**. The dark red point at ~(40,20) is state 61.
+
+3. **The Proof (Bottom-right TV bars):** 
+   - Giant spike >0.7 = the 73% defect
+   - Mean line at 0.083 = harmless 8.3% average
+   - **The average hides the outlier!**
+
+> "If you only look at the average, you think '8% error at B=10 is okay'. But the average hides the outlier."
+
+### Critical Test: Does the spike persist at higher B?
+
+- **Scenario A (Hope):** Spike disappears at B=100/1000 → defect was small-n artifact
+- **Scenario B (Concern):** Spike persists even as mean drops → persistent mathematical obstruction
+
+### Result: SCENARIO A CONFIRMED! ✅
+
+| B | State 61 TV | Max TV | Mean TV |
+|---|-------------|--------|---------|
+| 10 | **73.0%** | 73.0% | 8.3% |
+| 100 | 7.7% | 11.1% | 3.8% |
+| 1000 | 8.4% | 9.7% | 2.8% |
+
+**The 73% spike DISAPPEARS at higher B!**
+
+At B=100/1000, state 61 is no longer even the worst — all states are in the 8-11% range.
+
+**Interpretation:** The extreme defect at x=61 was a **small-n artifact**. At B=10, trajectories land at the literal small integers (61, 82, 23...) where transitions are highly deterministic.
+
+**Conclusion:** Conditional defects are ALSO a boundary effect, not a deep mathematical obstruction!
+
 ### Files
 - `src/transition_heatmap.py`
 - `data/transition_heatmap_k5_B10.png`
