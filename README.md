@@ -96,23 +96,26 @@ Highly composite numbers collapse faster due to more halving opportunities.
 
 We computed the Poisson correction ψ for the residue-corrected potential V(n) = log(n) + ψ(n mod 3^k).
 
-#### Extended Run (Overnight 2026-02-01)
+#### ⚠️ CRITICAL UPDATE: Extended Run Was Invalid!
 
-**Parameters:** 200k samples, k=8, t_burn=200, t_max=300, 20M transitions
+The "extended run" (t_burn=200, t_max=300) measured the **trivial fixed point n=1**, not real Collatz dynamics. At t=200, 100% of trajectories have already terminated!
 
-| Metric | Initial Run | Extended Run | Improvement |
-|--------|-------------|--------------|-------------|
-| Max corrected drift | +0.180 | **+0.000005** | **99.997% ↓** |
-| \|λ₂\| (mixing) | 0.973 | **0.873** | ✅ Better |
-| Global drift | -0.182 | -4.6e-06 | Near zero |
+**Valid Results (Original Run: t_burn=34, t_max=50, S=500k):**
 
-**🎯 Key Result:** The extended horizon reduced max corrected drift by **5 orders of magnitude** — from 0.18 to 0.000005.
+| Metric | Value | Status |
+|--------|-------|--------|
+| **E[Δlog n]** | **-0.182** | ✅ Strong negative drift! |
+| Max raw drift | +0.451 | Before correction |
+| Max corrected drift | **+0.180** | ⚠️ Still positive (1 state) |
+| States with positive drift | 1 / 4,374 | Single outlier |
+| π-mass of outlier | ~0 | Never visited (0 transitions) |
+| \|λ₂\| | 0.973 | Slow mixing |
 
-**Interpretation:** The ~10⁻⁵ residual is likely numerical precision / MCMC variance, not structural positive drift. GPT 5.2 Pro analysis confirms: *"This is exactly what 'ψ-correction is working' looks like in the wild."*
+**Key Finding:** The ψ-correction works for 4373/4374 states. The single outlier was never actually visited in 8M transitions — likely numerical artifact from missing data.
 
-**Status:** "Good enough to proceed" per GPT. Next step: m-step drift analysis to upgrade to a skeleton chain argument.
+**Status:** Investigating the outlier. Options: m-step drift, prove unreachability, or handle as exceptional set.
 
-See [psi-correction-results.md](docs/experiments/psi-correction-results.md) and [gpt-analysis-extended-run.md](docs/experiments/gpt-analysis-extended-run.md) for details.
+See [psi-correction-results.md](docs/experiments/psi-correction-results.md) and [CRITICAL-finding-2026-02-01.md](docs/experiments/CRITICAL-finding-2026-02-01.md) for details.
 
 ## Open Questions
 
