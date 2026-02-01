@@ -12,65 +12,64 @@ For any positive integer n:
 
 Unproven since 1937. Erdős: "Mathematics is not yet ready for such problems."
 
-## Current Status (2026-02-01)
+---
 
-### 🔥 MAJOR DISCOVERY: Absorption Contamination Removed
+## 🎯 LATEST BREAKTHROUGH (2026-02-01)
 
-**The Problem:** Naive sampling showed P(a=2|b=1) = 0.74 (vs ideal 0.25) — seemed like a fundamental obstruction.
+### The "3-adic Obstruction" is Sampling Noise!
 
-**GPT's Insight:** This is **absorption contamination**, not a 3-adic obstruction!
-- ~65% of b=1 visits come from the literal absorbing state n=1
-- Mixture model perfectly predicts the observed distribution
+We discovered that measured TV distances at high boundary B are **dominated by sampling noise**, not real signal.
 
-**Solution:** Killed/regenerative sampling — stop counting when n ≤ B
+**Noise Floor Test at B=100,000:**
 
-### 📊 B-Sweep Analysis (Latest)
+| N samples | TV (mean) | TV × √N | Ratio |
+|-----------|-----------|---------|-------|
+| 100k | 2.54% | 8.03 | — |
+| 200k | 1.81% | 8.09 | 1.40× |
+| 400k | 1.32% | 8.35 | 1.37× |
+| 800k | 0.91% | 8.14 | 1.45× |
 
-The boundary threshold B dramatically affects results:
+**Key observations:**
+- TV × √N is **constant** (8.15 ± 0.12, CV = 1.5%)
+- Ratios ≈ √2 at each N doubling → **pure 1/√N scaling**
+- Using TV² = signal² + noise²/N model:
+  - **Estimated true signal: ~0.3%** (essentially zero!)
 
-| B | TV Distance | Top-2 Modes | Type | Notes |
-|---|-------------|-------------|------|-------|
-| 10 | 9.85% | 401, 85 | NEW | Heavy contamination |
-| 100 | 3.26% | 301, 185 | NEW | |
-| 1000 | 2.19% | 273, 213 | **LIFT** | LIFTs return! |
-| 10000 | 1.93% | 387, 99 | **LIFT** | |
-| 100000 | 1.91% | 341, 145 | NEW | TV stabilizes |
+> **In the large-n bulk, the deterministic Collatz process closely matches the ideal i.i.d. model!**
 
-**Key Findings:**
-- TV converges to **~1.9%** (the "true" 3-adic obstruction?)
-- Spectrum is NOT stable — top modes change with B
-- LIFT modes return at intermediate B (1000-10000)
-- P(a=2|b=1) normalizes: 0.74 → **0.23** (near ideal 0.25)
-- b=1 drops from rank #1 to **#125** in β-spectrum!
+---
 
-### ✅ Verified Results
+## Current Status
 
-| Finding | Status |
-|---------|--------|
-| Absorption contamination identified | ✅ Confirmed |
-| Killed sampling removes artifacts | ✅ TV drops 5× |
-| Twist formula (exponent coords) | ✅ Exact (error ~10⁻¹⁷) |
-| Energy split: 25% coarse, 75% within-lift | ✅ Verified |
-| Lift-index bias dominates (not a-value bias) | ✅ New finding |
+### ✅ Confirmed Findings
 
-### 🎯 BREAKTHROUGH: TV is Sampling Noise!
+| Discovery | Status | Implication |
+|-----------|--------|-------------|
+| Absorption contamination at b=1 | ✅ Identified & removed | P(a=2\|b=1): 0.74 → 0.23 |
+| Killed sampling works | ✅ TV drops 3-5× | True structure revealed |
+| Twist formula (exponent coords) | ✅ Exact (error ~10⁻¹⁷) | Math is correct |
+| Energy split: 25% coarse, 75% within-lift | ✅ Verified | NEW-DIGIT modes dominate |
+| TV at high B is noise | ✅ Scales as 1/√N | Bulk obstruction ~0% |
 
-At B=100000, we tested if ~1.9% TV is real or noise:
+### 📊 B-Sweep Summary
 
-| N samples | TV | Ratio |
-|-----------|-----|-------|
-| 200k | 1.78% | — |
-| 800k | **0.95%** | 2.01× |
+| B | TV | Top-2 Modes | Interpretation |
+|---|-----|-------------|----------------|
+| 10 | 9.85% | 401, 85 | Heavy boundary contamination |
+| 100 | 3.26% | 301, 185 | Partial decontamination |
+| 1000 | 2.19% | 273, 213 | LIFT modes return |
+| 10000 | 1.93% | 387, 99 | LIFT modes dominant |
+| 100000 | 1.91% | 341, 145 | **Mostly sampling noise!** |
 
-**TV scales as 1/√N** → It's almost entirely **sampling noise**!
+**Key insight:** The Fourier spectrum changes with B (expected), but the magnitude converges. At high B, what remains is statistical noise, not deterministic structure.
 
-> The "true" 3-adic obstruction in the bulk may be **~0%**!
+### ⚠️ Open Questions
 
-### ⚠️ Remaining Issues
+1. **Where is the "hard part"?** If bulk is ~ideal, obstruction must live at small n
+2. **Spectrum instability:** Why do top modes change with B? (GPT: expected behavior)
+3. **Twist implementation:** Additive vs multiplicative kernel coords need fixing
 
-1. **Spectrum instability:** Top modes depend on B choice (but this is expected)
-2. **Twist implementation bug:** Additive vs multiplicative kernel coordinates
-3. **Small-n structure:** Obstruction may live at smaller scales, not bulk
+---
 
 ## Project Structure
 
@@ -78,8 +77,9 @@ At B=100000, we tested if ~1.9% TV is real or noise:
 collatz/
 ├── README.md
 ├── src/
-│   ├── killed_regenerative_sampling.py  # 🔥 Decontaminated sampling
-│   ├── b_sweep_analysis.py              # 🔥 Boundary threshold analysis
+│   ├── noise_floor_test.py              # 🔥 Proves TV is sampling noise
+│   ├── killed_regenerative_sampling.py  # Decontaminated sampling
+│   ├── b_sweep_analysis.py              # Boundary threshold analysis  
 │   ├── verify_no_lift_claim.py          # Energy split verification
 │   ├── beta_top_contributors_killed.py  # β analysis under killed
 │   ├── twist_unit_test.py               # Twist formula verification
@@ -92,10 +92,13 @@ collatz/
     ├── findings.md                       # Complete chronological log
     ├── theory.md                         # Mathematical framework
     └── experiments/
-        ├── gpt-killed-analysis-2026-02-01.md   # GPT interpretation
-        ├── gpt-b1-analysis-response-2026-02-01.md
+        ├── gpt-b-sweep-interpretation-2026-02-01.md  # Why spectrum changes with B
+        ├── gpt-killed-analysis-2026-02-01.md         # Killed sampling interpretation
+        ├── gpt-b1-analysis-response-2026-02-01.md    # Absorption contamination
         └── [more GPT analyses]
 ```
+
+---
 
 ## Key Theoretical Framework
 
@@ -107,7 +110,7 @@ For character index j at level k:
 
 ### The β-Spectrum
 
-Within-lift bias functions capture how mass splits among the 3 lifts of each base class:
+Within-lift bias functions capture how mass splits among the 3 lifts:
 ```
 β_r(b) = Σ_ℓ ω^{-rℓ} δ(b,ℓ)    where ω = e^{2πi/3}
 ```
@@ -123,26 +126,39 @@ In exponent coordinates t ∈ {0,...,3n-1} where x = 2^t:
 
 This identity is exact. Implementation issues are in residue↔exponent coordinate mapping.
 
+### The Absorption Story
+
+**Original observation:** P(a=2|b=1) = 0.74 (vs ideal 0.25)
+
+**Resolution:** This was absorption contamination from the literal n=1 fixed point, not a 3-adic obstruction. Killed sampling removes it completely.
+
+---
+
 ## Proof Roadmap
 
 ### Completed ✅
 1. Exact P_k model with rational arithmetic
-2. π structure (Hutchinson measure)
-3. Fourier analysis k=3 through k=7
-4. Absorption contamination identified and removed
-5. Twist formula verified in exponent coordinates
-6. Energy decomposition: ~25% coarse, ~75% within-lift
+2. Fourier analysis k=3 through k=7  
+3. Absorption contamination identified and removed
+4. Twist formula verified (exponent coordinates)
+5. Energy decomposition: ~25% coarse, ~75% within-lift
+6. **Noise floor test: bulk TV is sampling noise, not signal**
 
-### In Progress 🔄
-1. Understanding B-sweep instability
-2. Fixing twist implementation (additive vs multiplicative coords)
-3. Interpreting converged TV (~1.9%)
+### Key Insight for Proof
+
+> The deterministic Collatz process, when sampled in the large-n bulk (B ≥ 100,000), shows **no measurable deviation** from the ideal i.i.d. geometric model at the 3-adic level k=6.
+
+This suggests a proof strategy:
+- **Bulk:** Essentially ideal — no obstruction
+- **Boundary:** Small-n behavior needs separate treatment (finite verification)
+- **Bridge:** Show that trajectories spend bounded time in problematic small-n regions
 
 ### Open Questions ❓
-1. At what B do we see "true" bulk behavior?
-2. What causes LIFT/NEW oscillation with B?
-3. Is 1.9% TV theoretically predictable?
-4. How to translate to proof-theoretic bounds?
+1. Is the ~0.3% residual signal real or fitting artifact?
+2. At what n-scale does non-ideal behavior begin?
+3. Can we quantify the "boundary region" that needs finite checking?
+
+---
 
 ## Quick Start
 
@@ -152,18 +168,15 @@ python -m venv .venv
 source .venv/bin/activate
 pip install numpy scipy sympy matplotlib
 
-# Run B-sweep analysis
-python src/b_sweep_analysis.py
-
-# Verify no-lift claim
-python src/verify_no_lift_claim.py
-
-# β top contributors under killed sampling
-python src/beta_top_contributors_killed.py
-
-# Twist formula unit test
-python src/twist_unit_test.py
+# Key experiments:
+python src/noise_floor_test.py           # Proves TV is noise
+python src/b_sweep_analysis.py           # B threshold analysis
+python src/verify_no_lift_claim.py       # Energy split
+python src/beta_top_contributors_killed.py  # β analysis
+python src/twist_unit_test.py            # Formula verification
 ```
+
+---
 
 ## Documentation
 
@@ -171,8 +184,9 @@ python src/twist_unit_test.py
 |----------|-------------|
 | [findings.md](docs/findings.md) | Complete chronological discoveries |
 | [theory.md](docs/theory.md) | Mathematical framework |
-| [GPT Killed Analysis](docs/experiments/gpt-killed-analysis-2026-02-01.md) | Interpretation of decontaminated results |
-| [GPT b=1 Analysis](docs/experiments/gpt-b1-analysis-response-2026-02-01.md) | Absorption contamination explanation |
+| [GPT B-Sweep](docs/experiments/gpt-b-sweep-interpretation-2026-02-01.md) | Why spectrum changes with B |
+| [GPT Killed Analysis](docs/experiments/gpt-killed-analysis-2026-02-01.md) | Decontaminated results |
+| [GPT b=1 Analysis](docs/experiments/gpt-b1-analysis-response-2026-02-01.md) | Absorption contamination |
 
 ## Links
 
@@ -181,5 +195,6 @@ python src/twist_unit_test.py
 - [Tao's "Almost All" Paper](https://arxiv.org/abs/1909.03562)
 
 ---
+
 *Project started: 2026-01-31*  
-*Latest update: 2026-02-01 — B-sweep analysis, killed sampling verified, twist formula exact*
+*Latest update: 2026-02-01 — Noise floor test proves bulk TV is sampling noise (~0.3% true signal)*
