@@ -1,43 +1,58 @@
-# Collatz Conjecture: Bulk = Ideal 🧮
+# Collatz Conjecture: A Conditional Reduction 🧮
 
-**TL;DR:** We found empirical evidence that Collatz dynamics behave *ideally* for large numbers. All the "weird structure" lives in a tiny boundary region near n=1.
+**We reduce the Collatz conjecture to a single "No Conspiracy" lemma.**
+
+If you can prove that arithmetic doesn't conspire against descent, our Foster-Lyapunov framework completes the proof. We provide empirical evidence that no such conspiracy exists — but proving it remains the hard open problem.
 
 ---
 
-## The Discovery
+## What We Found
 
-Using Markov chain analysis on 3-adic residues, we measured how Collatz trajectories deviate from an ideal stochastic model.
-
-**Result:** At n > 1000, deviations are pure sampling noise. The "Collatz structure" only exists at small n.
-
-### The Three-Phase Model
+Using Markov chain analysis on 3-adic residues, we discovered a clear phase structure:
 
 | Phase | n Range | Behavior |
 |-------|---------|----------|
-| 🧊 **Crystalline** | ≤ 10 | Deterministic, 73% deviation from ideal |
-| 🌊 **Transition** | ~100 | "Ice melts", 11% deviation |
-| 💧 **Liquid** | ≥ 1000 | **Bulk = Ideal**, ~0% true deviation |
+| 🧊 **Crystalline** | ≤ 10 | Deterministic terminal funnel |
+| 🌊 **Transition** | ~100 | Structure dissolves |
+| 💧 **Liquid** | ≥ 1000 | **Bulk = Ideal** (indistinguishable from random) |
 
-The 73% "defect" at small n isn't mysterious — it's a **terminal funnel** (deterministic chute to 1):
-```
-61 → 23 → 35 → 53 → 5 → ... → 1
-```
+The "Collatz structure" only exists at small n. For large n, trajectories behave exactly like an idealized stochastic model.
 
 ---
 
-## Why This Matters
+## The Reduction
 
-If bulk behavior is truly ideal, the Collatz conjecture reduces to:
+We've transformed Collatz from:
+> "Does every trajectory reach 1?"
 
-1. ✅ **Bulk:** Already behaves ideally (our finding)
-2. 🔄 **Bridge:** Show trajectories reach the bulk (Foster-Lyapunov)
-3. ✅ **Boundary:** Finite verification (already done to 10²⁰+)
+To:
+> "Can arithmetic conspire to produce infinite bad-block chains?"
 
-**📖 [Full theoretical framework →](docs/theory.md)** — Foster-Lyapunov setup, Bridge Lemma, proof roadmap
+### Theorem A (Our Contribution) ✅
+
+**If** the deterministic Syracuse map satisfies a uniform no-conspiracy condition, **then** the Lyapunov function V(n) = log n + ψ(n mod 3^k) proves descent to a finite set, which can be verified computationally.
+
+### Theorem B (The Open Problem) ❓
+
+**Prove** the uniform no-conspiracy condition: that no starting integer can produce an infinite chain of low-valuation steps that defeats the expected negative drift.
+
+**📖 [Full theoretical framework →](docs/theory.md)**
 
 ---
 
-## Key Evidence
+## The No-Conspiracy Lemma (What's Missing)
+
+Formally, we need:
+
+> **Uniform Block-Drift Lemma:** There exist m ≥ 1, k ≥ 1, δ > 0, B₀ such that for **every** odd n > B₀:
+> 
+> V(T^m(n)) - V(n) ≤ -δ
+
+Our empirical evidence strongly suggests this holds. But "holds on average" ≠ "holds for every n". The gap is exactly the Collatz conjecture.
+
+---
+
+## Empirical Evidence
 
 ### Noise Floor Test (n > 100,000)
 
@@ -47,16 +62,14 @@ If bulk behavior is truly ideal, the Collatz conjecture reduces to:
 | 400k | 1.32% | 8.35 |
 | 800k | 0.91% | 8.14 |
 
-TV × √N is constant → **the deviation is sampling noise, not structure**.
+TV × √N constant → deviation is sampling noise, not structure.
 
-### Signal vs Boundary
+### Tao Comparison
 
-| Threshold B | True Signal |
-|-------------|-------------|
-| 10 | 9.6% ← real |
-| 100 | 2.4% |
-| 1000 | 0.8% |
-| 10000+ | ~0% ← noise |
+| Approach | Target | Status |
+|----------|--------|--------|
+| Tao (2019) | "Almost all" (log density) | ✅ Proven |
+| Our framework | "All n > B₀" | Reduces to No-Conspiracy Lemma |
 
 ---
 
@@ -68,10 +81,8 @@ cd collatz-patterns
 python -m venv .venv && source .venv/bin/activate
 pip install numpy scipy matplotlib
 
-# Key experiments:
 python src/noise_floor_test.py           # Verify bulk is noise
-python src/b_sweep_analysis.py           # Phase transition
-python src/transition_heatmap.py         # Conditional defects
+python src/finite_verification.py        # Verify small set
 ```
 
 ---
@@ -80,54 +91,44 @@ python src/transition_heatmap.py         # Conditional defects
 
 | Document | Description |
 |----------|-------------|
+| [theory.md](docs/theory.md) | Mathematical framework + No-Conspiracy Lemma |
 | [findings.md](docs/findings.md) | Complete experimental log |
-| [theory.md](docs/theory.md) | Mathematical framework |
-| [Foster-Lyapunov](docs/experiments/gpt-foster-lyapunov-framework-2026-02-01.md) | Proof roadmap |
+| [Critical Assessment](docs/experiments/gpt-critical-assessment-2026-02-01.md) | Why this is a reduction, not a proof |
+| [Foster-Lyapunov](docs/experiments/gpt-foster-lyapunov-framework-2026-02-01.md) | Paper-ready framework |
 
 ---
 
-## Project Structure
+## What This Is (And Isn't)
 
-```
-collatz/
-├── src/           # Analysis scripts
-├── docs/          # Detailed documentation
-│   ├── findings.md
-│   ├── theory.md
-│   └── experiments/
-├── paper/         # Draft paper
-└── data/          # Results (gitignored)
-```
+### ✅ What it IS:
+- A **conditional proof**: "If No-Conspiracy, then Collatz"
+- A **proof scaffold** that identifies exactly which lemma would suffice
+- **Strong empirical evidence** that the lemma likely holds
+- A **transformation** of the problem into a precise mathematical statement
+
+### ❌ What it is NOT:
+- A proof of Collatz for all n
+- A bypass of the core number-theoretic difficulty
+- A claim that statistics can solve a deterministic problem
 
 ---
 
-## ⚠️ The Deterministic Wall
+## The Demon Analogy
 
-This is **empirical evidence and a proof scaffold**, not a proof.
+Think of it as a game against an adversary:
 
-### What We Have:
-- ✅ Empirical evidence that bulk behavior matches the ideal Markov model
-- ✅ A Foster-Lyapunov framework that identifies exactly which lemmas would suffice
-- ✅ Finite verification infrastructure
+- **Our simulations:** Random starting values. The demon loses on average.
+- **A proof:** The demon picks the starting value maliciously. He searches for the one number that breaks our drift condition.
+- **No-Conspiracy Lemma:** Proves the demon has no winning move — arithmetic forbids it.
 
-### What We Don't Have:
-- ❌ A "no conspiracy" lemma proving uniform bounds for ALL n
-- ❌ Transfer from "ε small in experiments" to "ε small for every starting point"
-
-### The Core Issue:
-> Collatz is **deterministic**. Our framework uses Markov chain theory. The gap between "random-like on average" and "no adversarial counterexample exists" is exactly the Collatz conjecture.
-
-As GPT put it:
-> "Your framework is a proof scaffold. It tells you exactly which lemmas would suffice. It becomes a proof only if you supply a precise no-conspiracy statement."
-
-**📖 [Full critical assessment →](docs/experiments/gpt-critical-assessment-2026-02-01.md)**
+Simulations can't defeat the demon because he hides in the gaps of probability.
 
 ---
 
 ## Links
 
 - [Tao's "Almost All" Paper (2019)](https://arxiv.org/abs/1909.03562)
-- [Wikipedia: Collatz Conjecture](https://en.wikipedia.org/wiki/Collatz_conjecture)
+- [Lagarias Survey](https://arxiv.org/abs/math/0309224)
 
 ---
 
