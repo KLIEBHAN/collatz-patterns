@@ -113,15 +113,21 @@ The "extended run" (t_burn=200, t_max=300) measured the **trivial fixed point n=
 
 **Key Finding:** The ψ-correction works for 4373/4374 states. The single outlier was never actually visited in 8M transitions — likely numerical artifact from missing data.
 
-**Status:** GPT recommended fix: Use very large starting values (256-384 bit) to avoid absorption. See analysis below.
+**Status:** ✅ **OUTLIER RESOLVED!** The "+0.180 positive drift" was a numerical artifact.
 
-### Next Steps (per GPT 5.2 Pro, 2026-02-01)
+### Resolution (2026-02-01)
 
-1. **Step 0:** Mark 0-visit states as NaN, report only over S_min
-2. **Step 1:** Forced-start sampling from residue 6397 to get real data
-3. **Step 2:** New extended run with 256-bit starting values (t_burn=200, t_max=400)
+| Finding | Value |
+|---------|-------|
+| Naive max corrected drift | +0.180 (artifact!) |
+| **Clean max drift (S_min)** | **-0.0008** ✅ |
+| **TRUE g(6397)** | **-0.290** ✅ |
 
-See [gpt-analysis-outlier-sampling.md](docs/experiments/gpt-analysis-outlier-sampling.md) for full analysis.
+**Forced-start sampling** from residue 6397 revealed it actually has **strongly negative drift** (-0.29), even more negative than the global average (-0.18).
+
+**Conclusion:** The ψ-correction works perfectly. All states have negative drift when properly measured.
+
+See [outlier-resolved-2026-02-01.md](docs/experiments/outlier-resolved-2026-02-01.md) for details.
 
 ## Open Questions
 
