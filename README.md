@@ -101,14 +101,26 @@ collatz/
 
 ---
 
-## ⚠️ Disclaimer
+## ⚠️ The Deterministic Wall
 
-This is **empirical evidence**, not a proof. What can still hide problems:
-- Rare "bad blocks" at very large n
-- Time correlations beyond our measurement
-- The gap between empirical kernel and ideal kernel
+This is **empirical evidence and a proof scaffold**, not a proof.
 
-We're not claiming to have solved Collatz — we're characterizing where the difficulty lives.
+### What We Have:
+- ✅ Empirical evidence that bulk behavior matches the ideal Markov model
+- ✅ A Foster-Lyapunov framework that identifies exactly which lemmas would suffice
+- ✅ Finite verification infrastructure
+
+### What We Don't Have:
+- ❌ A "no conspiracy" lemma proving uniform bounds for ALL n
+- ❌ Transfer from "ε small in experiments" to "ε small for every starting point"
+
+### The Core Issue:
+> Collatz is **deterministic**. Our framework uses Markov chain theory. The gap between "random-like on average" and "no adversarial counterexample exists" is exactly the Collatz conjecture.
+
+As GPT put it:
+> "Your framework is a proof scaffold. It tells you exactly which lemmas would suffice. It becomes a proof only if you supply a precise no-conspiracy statement."
+
+**📖 [Full critical assessment →](docs/experiments/gpt-critical-assessment-2026-02-01.md)**
 
 ---
 

@@ -161,16 +161,47 @@ The "crystalline" phase isn't random — it's a deterministic chute to 1:
 
 ---
 
-## 9. What Remains for Rigorous Proof
+## 9. The Deterministic Wall: What's Really Missing
 
-> **The key missing piece:** Prove a uniform bulk kernel approximation Q ≈ P_k with explicit constants outside a finite set C.
+### The Core Problem
 
-Once this is proved, combine:
-1. (SUFF) → δ > 0
-2. Bridge Lemma → τ_C < ∞
-3. Finite Verification → reaches 1
+Collatz is **deterministic**. Our framework uses Markov chain theory. This creates a fundamental gap:
 
-Everything else becomes routine.
+| What We Have | What We Need |
+|--------------|--------------|
+| "ε small under our sampling" | "ε small for EVERY n > B₀" |
+| Average-case behavior | Worst-case guarantee |
+| Random-like in experiments | No adversarial counterexample |
+
+**This gap IS the Collatz conjecture.**
+
+### The Missing "No Conspiracy" Lemma
+
+A rigorous proof would require something like:
+
+> **Uniform Block-Drift Lemma:** There exist m, k, δ > 0, B₀ such that for EVERY odd n > B₀:
+> 
+> V(T^m(n)) - V(n) ≤ -δ
+
+This is NOT implied by our empirical findings. It requires proving that no starting integer can produce an infinite chain of "bad blocks" (low a-values).
+
+### Why This Is Hard
+
+For any finite pattern (a₀, ..., a_{m-1}), there typically exist infinitely many integers realizing that pattern. So "no conspiracy" must mean one of:
+1. Bad blocks cannot chain forever along any orbit
+2. Long bad chains force eventual compensating large valuations
+
+This is a **global, adversarial control problem** — fundamentally different from our statistical measurements.
+
+### Honest Framework Classification
+
+| Target | Achievability |
+|--------|---------------|
+| "Almost all n" (Tao-style) | ✅ Plausibly achievable |
+| "All n > B₀" | ❌ Requires new ingredients |
+
+Our framework is best described as:
+> **A proof scaffold** that identifies exactly which lemmas would suffice, not a proof that those lemmas hold.
 
 ---
 
