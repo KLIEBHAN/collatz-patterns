@@ -106,9 +106,11 @@ We computed the Poisson correction ψ for the residue-corrected potential V(n) =
 | States with positive drift | 1 / 4,374 | 🎯 Almost there! |
 | π-mass of positive states | ≈ 0 | ✅ Negligible |
 
-**Interpretation:** The correction works for 99.98% of states by probability mass. Only one state (practically never visited) remains problematic.
+**Interpretation:** The correction works for 99.98% of states by probability mass. The single "problematic" state had **0 visits in 8M transitions** — likely a numerical artifact, not a real obstacle.
 
-See [psi-correction-results.md](docs/experiments/psi-correction-results.md) for details.
+**Status:** GPT analysis suggests the outlier should vanish with m-step drift analysis or longer horizon runs.
+
+See [psi-correction-results.md](docs/experiments/psi-correction-results.md) and [gpt-analysis-outlier.md](docs/experiments/gpt-analysis-outlier.md) for details.
 
 ## Open Questions
 

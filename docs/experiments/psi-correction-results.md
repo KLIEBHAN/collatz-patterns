@@ -102,5 +102,39 @@ Min corrected drift: -0.000808
 
 ---
 
+## Outlier Deep-Dive (Post-Analysis)
+
+### The Outlier State
+
+| Property | Value |
+|----------|-------|
+| State Index | 4264 |
+| Residue (mod 6561) | 6397 |
+| **Visit Count** | **0** (out of 8,000,000 transitions!) |
+| Raw Drift | 0.000 (no data) |
+| Corrected Drift | +0.180 (artifact) |
+
+**Key finding:** The "positive drift" is a numerical phantom — the state was never visited, so there's no real drift measurement. The positive value comes purely from ψ-correction numerics on missing data.
+
+### GPT Interpretation
+
+See [gpt-analysis-outlier.md](gpt-analysis-outlier.md) for full analysis.
+
+**Summary:** The outlier is almost certainly estimation noise amplified by slow mixing (|λ₂| = 0.973 → ~37× error amplification). Should disappear with:
+1. m-step drift analysis (m=50-200)
+2. Longer horizon (t_max=300, t_burn=200)
+
+---
+
+## Next Steps (Prioritized)
+
+1. **Error bars + Bootstrap** — Confirm outlier is noise
+2. **m-Step Drift** — Compute d^(m)(x) for m=50,100,200
+3. **Longer Horizon Run** — t_max=300, t_burn=200
+4. **k Comparison** — Try k=6,7,8 with longer horizon
+5. **Bad Blocks Analysis** — Only after above steps
+
+---
+
 *Analysis date: 2026-02-01*
-*Awaiting GPT interpretation of results*
+*GPT interpretation complete — outlier likely numerical artifact*
