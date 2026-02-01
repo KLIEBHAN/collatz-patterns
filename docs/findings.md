@@ -794,43 +794,51 @@ Even B=100 wasn't enough to remove all boundary effects. The "true" bulk spectru
 
 ---
 
-## 2026-02-01: NOISE FLOOR TEST — TV is Mostly Noise! 🎯
+## 2026-02-01: NOISE FLOOR TEST — Marginal TV is Mostly Noise
 
 ### The Test
 
 GPT warned: 1.9% TV might be sampling noise (expected ~1.7% for N=400k).
 
 We tested at B=100000:
-1. 5 seeds at N=200k
-2. Scale to N=800k (4×)
+1. Multiple seeds at N=100k, 200k, 400k, 800k
+2. Check if TV scales as 1/√N
 
 ### Results
 
-| Metric | N=200k | N=800k |
-|--------|--------|--------|
-| TV | 1.78% ± 0.08% | **0.95%** |
-| Expected noise | 2.46% | 1.23% |
+| N | TV (mean) | TV × √N |
+|---|-----------|---------|
+| 100k | 2.54% | 8.03 |
+| 200k | 1.81% | 8.09 |
+| 400k | 1.32% | 8.35 |
+| 800k | 0.91% | 8.14 |
 
-**TV ratio: 2.01×** — almost exactly √4 = 2!
+**TV × √N is constant** (8.15 ± 0.12, CV = 1.5%)
 
-### Verdict: NOISE ✅
+Using TV² = signal² + c/N model:
+- **Estimated true signal: ~0.3%** (essentially zero)
 
-> **The ~1.9% "obstruction" at B=100000 is almost entirely sampling noise!**
+### Interpretation
 
-If TV scales as 1/√N, then:
-- The true signal is **~0%** (or extremely small)
-- At B=100000, we're in the "bulk" regime where the deterministic process closely matches the ideal model
+The **marginal** residue distribution mod 3⁶ at high B shows no measurable deviation from ideal — what we measured was sampling noise.
 
-### Implications
+### ⚠️ Important Caveat (GPT Analysis)
 
-1. **The 3-adic obstruction may be essentially zero** in the large-n bulk
-2. All measured TV at high B is statistical noise
-3. The "real" obstruction (if any) lives at smaller n scales
-4. This is **good news for a proof** — bulk behavior is close to ideal!
+> "This is excellent news about mixing in one projection, not a global victory parade."
+
+**What we showed:** Marginal law of n mod 3⁶ looks ideal in bulk.
+
+**What can still hide problems:**
+1. **Conditional kernels Q(x,·)** — even if marginal matches
+2. **Time correlations** — marginal perfect but transitions structured
+3. **Large deviations** — rare bad blocks
+
+The Collatz difficulty likely lives in these harder-to-measure aspects.
 
 ### Files
 - `src/noise_floor_test.py`
 - `data/noise_floor_test.json`
+- `docs/experiments/gpt-noise-floor-analysis-2026-02-01.md`
 
 ---
 
