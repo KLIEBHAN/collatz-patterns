@@ -113,9 +113,15 @@ The "extended run" (t_burn=200, t_max=300) measured the **trivial fixed point n=
 
 **Key Finding:** The ψ-correction works for 4373/4374 states. The single outlier was never actually visited in 8M transitions — likely numerical artifact from missing data.
 
-**Status:** Investigating the outlier. Options: m-step drift, prove unreachability, or handle as exceptional set.
+**Status:** GPT recommended fix: Use very large starting values (256-384 bit) to avoid absorption. See analysis below.
 
-See [psi-correction-results.md](docs/experiments/psi-correction-results.md) and [CRITICAL-finding-2026-02-01.md](docs/experiments/CRITICAL-finding-2026-02-01.md) for details.
+### Next Steps (per GPT 5.2 Pro, 2026-02-01)
+
+1. **Step 0:** Mark 0-visit states as NaN, report only over S_min
+2. **Step 1:** Forced-start sampling from residue 6397 to get real data
+3. **Step 2:** New extended run with 256-bit starting values (t_burn=200, t_max=400)
+
+See [gpt-analysis-outlier-sampling.md](docs/experiments/gpt-analysis-outlier-sampling.md) for full analysis.
 
 ## Open Questions
 
