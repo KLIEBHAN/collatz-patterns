@@ -1130,3 +1130,49 @@ If this holds → uniform negative drift. Proving it for all n is as hard as Col
 - **Next milestone:** Excursion decomposition around ν₂(n+1), prove recharge cost
 
 **Full analysis:** `docs/experiments/gpt-no-conspiracy-impossible-2026-02-01.md`
+
+---
+
+## 🎯 2026-02-01: Attack Vectors for Key Lemma (K)
+
+### The Clean Reduction: Recharge Bound (RB)
+
+Since a=1 ⟺ r≥2, and r drops by 1 each a=1 step:
+```
+#{a=1} ≤ (r₀ - 1) + Σ Δᵢ⁺ + correction
+```
+
+**So (K) follows from Recharge Bound (RB):**
+```
+Σ Δᵢ⁺ ≤ θt + C·log n
+```
+
+### The Mathematical Lever: LTE
+
+```
+ν₂(3^m - 1) = 2 + ν₂(m)  for m even
+```
+
+Order of 3 mod 2^R is 2^{R-2}. Deep returns need exponential time gaps!
+
+### The Sharp Target: Return-Time vs Depth (RTD)
+
+> **RTD Lemma:** If rᵢ ≥ R, then next j with rⱼ ≥ R satisfies j - i ≥ c·2^R - C
+
+**If RTD holds → (K) follows directly!**
+
+### The Test
+
+> Can you convert "deep return to -1" into a forced congruence with exponential time gap?
+
+That's the wall in its most concrete, testable form.
+
+### What's Provable Now
+
+| Statement | Status |
+|-----------|--------|
+| Almost-all (K) | ✅ Within reach |
+| RTD for fixed R | 🟡 Test with LTE |
+| Uniform RTD | ❌ The wall |
+
+**Full analysis:** `docs/experiments/gpt-key-lemma-attack-vectors-2026-02-01.md`
