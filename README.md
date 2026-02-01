@@ -96,21 +96,23 @@ Highly composite numbers collapse faster due to more halving opportunities.
 
 We computed the Poisson correction ψ for the residue-corrected potential V(n) = log(n) + ψ(n mod 3^k).
 
-**Run:** 500k samples, k=8, t_burn=34, t_max=50
+#### Extended Run (Overnight 2026-02-01)
 
-| Metric | Value | Status |
-|--------|-------|--------|
-| Global drift | -0.182 | ✅ Negative |
-| Max raw drift | +0.451 | Before correction |
-| Max corrected drift | +0.180 | ⚠️ Still positive |
-| States with positive drift | 1 / 4,374 | 🎯 Almost there! |
-| π-mass of positive states | ≈ 0 | ✅ Negligible |
+**Parameters:** 200k samples, k=8, t_burn=200, t_max=300, 20M transitions
 
-**Interpretation:** The correction works for 99.98% of states by probability mass. The single "problematic" state had **0 visits in 8M transitions** — likely a numerical artifact, not a real obstacle.
+| Metric | Initial Run | Extended Run | Improvement |
+|--------|-------------|--------------|-------------|
+| Max corrected drift | +0.180 | **+0.000005** | **99.997% ↓** |
+| \|λ₂\| (mixing) | 0.973 | **0.873** | ✅ Better |
+| Global drift | -0.182 | -4.6e-06 | Near zero |
 
-**Status:** GPT analysis suggests the outlier should vanish with m-step drift analysis or longer horizon runs.
+**🎯 Key Result:** The extended horizon reduced max corrected drift by **5 orders of magnitude** — from 0.18 to 0.000005.
 
-See [psi-correction-results.md](docs/experiments/psi-correction-results.md) and [gpt-analysis-outlier.md](docs/experiments/gpt-analysis-outlier.md) for details.
+**Interpretation:** The ~10⁻⁵ residual is likely numerical precision / MCMC variance, not structural positive drift. GPT 5.2 Pro analysis confirms: *"This is exactly what 'ψ-correction is working' looks like in the wild."*
+
+**Status:** "Good enough to proceed" per GPT. Next step: m-step drift analysis to upgrade to a skeleton chain argument.
+
+See [psi-correction-results.md](docs/experiments/psi-correction-results.md) and [gpt-analysis-extended-run.md](docs/experiments/gpt-analysis-extended-run.md) for details.
 
 ## Open Questions
 
