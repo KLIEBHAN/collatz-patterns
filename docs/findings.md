@@ -568,6 +568,42 @@ The b=1 effect is actually **good news** — it means the true 3-adic mixing obs
 
 ---
 
+## 2026-02-01: Killed Sampling CONFIRMS GPT Hypothesis ✅
+
+### Implementation
+
+We implemented killed/regenerative sampling:
+- Kill (regenerate) when n ≤ B (B=100)
+- This removes visits from the absorbing boundary
+
+### Results: k=5
+
+| Metric | Contaminated | Killed |
+|--------|--------------|--------|
+| P(a=2\|b=1) | 0.7391 | **0.2319** |
+| b=1 rank in β₁ | #1 | **#2** |
+| TV distance | 5.2% | **1.32%** |
+
+**P(a=2|b=1) dropped from 0.74 to 0.23 — now near ideal 0.25!**
+
+### Results: k=6
+
+| Metric | Contaminated | Killed |
+|--------|--------------|--------|
+| TV distance | 8.3% | **2.88%** |
+
+### Conclusion
+
+**GPT was right:** The b=1 "dominance" was almost entirely absorption contamination.
+
+The true 3-adic mixing obstruction is much smaller than we originally measured!
+
+**Files:**
+- `src/killed_regenerative_sampling.py`
+- `data/killed_regenerative_k5.json`
+
+---
+
 ## Conjectures (Unproven)
 
 1. **Bit Density Conjecture:** For numbers of equal bit-length, stopping time correlates positively with Hamming weight (number of 1-bits).
