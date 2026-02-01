@@ -877,6 +877,47 @@ This matches GPT's prediction: the Collatz difficulty hides in boundary/small-n 
 
 ---
 
+## 2026-02-01: Transition Heatmap — Conditional Defects Found! 🔥
+
+### Experiment C: Kernel-level defects
+
+Visualize Q(x,·) vs P(x,·) to find hidden structure.
+
+### Results (k=5)
+
+| B | Mean Row TV | Max Row TV |
+|---|-------------|------------|
+| 10 | 8.3% | **73.0%** |
+| 100 | 3.8% | 11.1% |
+
+### Top Conditional Defects (B=10)
+
+| Rank | State x | TV(Q(x,·), P(x,·)) |
+|------|---------|-------------------|
+| 1 | 61 | **73.0%** |
+| 2 | 82 | 45.1% |
+| 3 | 23 | 40.2% |
+| 4 | 35 | 33.6% |
+| 5 | 190 | 25.9% |
+
+### Key Finding
+
+**Marginal distribution looks good, but transitions are STRONGLY structured!**
+
+State x=61 has 73% TV from ideal — nearly all transitions from this state deviate from expectation.
+
+This confirms GPT's warning:
+> "Conditional kernels Q(x,·) can hide problems even if marginal matches."
+
+The Collatz structure at small n is NOT just a marginal effect — it's deeply embedded in the transition dynamics.
+
+### Files
+- `src/transition_heatmap.py`
+- `data/transition_heatmap_k5_B10.png`
+- `data/transition_heatmap_results.json`
+
+---
+
 ## Conjectures (Unproven)
 
 1. **Bit Density Conjecture:** For numbers of equal bit-length, stopping time correlates positively with Hamming weight (number of 1-bits).
