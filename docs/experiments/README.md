@@ -1,15 +1,26 @@
-# Experiments (index)
+# Experiments
 
-This folder collects experiment specifications, GPT extracts (for provenance), and short summaries.
+Dokumentation der Experimente und GPT-Analysen.
 
-## Specs
-- `M2-M4-spec.md` — pre-registered experimental spec (our v1)
-- `M2-M4-spec_gpt.md` — GPT 5.2 Pro extract of an M2–M4 spec (raw, preserved)
+## Aktuelle Dokumente
 
-## Lemma roadmap
-- `lemma-roadmap_gpt.md` — GPT 5.2 Pro lemma-candidate roadmap (raw, preserved)
-- `lemma-roadmap_summary.md` — 1-page executive summary we actually use
+| Datei | Beschreibung |
+|-------|--------------|
+| `critical-review-forced-start.md` | GPT-Review der Forced-Start Methodik |
+| `exact-Pk-verification-2026-02-01.md` | Verifikation des exakten P_k Modells |
+| `gpt-critical-analysis-2026-02-01.md` | GPT kritische Analyse (22m Denkzeit) |
+| `gpt-exact-Pk-model.md` | GPT Konstruktion des exakten P_k |
+| `lemma-roadmap_summary.md` | Zusammenfassung der Beweis-Roadmap |
+| `M2-M4-spec.md` | Spezifikation der M2-M4 Experimente |
 
-## Conventions
-- Raw GPT extracts are kept as-is (sometimes ugly unicode/math). They are **sources**, not polished docs.
-- Anything we adopt should be reflected in the pre-registered spec and/or a clean summary.
+## Unterordner
+
+- `gpt-raw/` — GPT-Rohoutputs (vollständig, für Referenz)
+- `archive/` — Erledigte/überholte Analysen (Outlier gelöst, etc.)
+- `runs/` — Automatisch generierte Run-Logs
+
+## Konventionen
+
+- Aktuelle, relevante Dokumente im Hauptordner
+- GPT-Outputs mit Präfix `gpt-`
+- Datum-Suffix für zeitgebundene Analysen: `-YYYY-MM-DD.md`
