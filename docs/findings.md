@@ -604,6 +604,42 @@ The true 3-adic mixing obstruction is much smaller than we originally measured!
 
 ---
 
+## 2026-02-01: Killed Sampling Reveals DIFFERENT Fourier Structure! 🔥
+
+### The Surprise
+
+When we ran k=6 Fourier analysis with killed sampling, the **top modes changed completely**!
+
+| Rank | Contaminated | Killed |
+|------|--------------|--------|
+| 1-2 | 85, 401 | **149, 337** |
+| 3-4 | 237, 249 | **355, 131** |
+| 5-6 | 337, 149 | **467, 19** |
+
+### Mode Distribution
+
+| Cutoff | Contaminated | Killed |
+|--------|--------------|--------|
+| Top-10 | 80% NEW-DIGIT | **100% NEW-DIGIT** |
+| Top-20 | 80% NEW-DIGIT | **100% NEW-DIGIT** |
+
+### Implication
+
+The contaminated analysis was **dominated by absorption artifacts** — specifically, the j=85/401 and j=237/249 modes were amplified by the b=1 contamination.
+
+The true 3-adic Fourier obstruction landscape is:
+1. **Smaller** (TV 2.88% vs 8.3%)
+2. **Different modes** (149/337 instead of 85/401)
+3. **More purely NEW-DIGIT** (no LIFT modes in top-20!)
+
+**This means our entire understanding of the proof targets needs revision!**
+
+### Files
+- `src/k6_fourier_killed.py`
+- `data/k6_fourier_killed.json`
+
+---
+
 ## Conjectures (Unproven)
 
 1. **Bit Density Conjecture:** For numbers of equal bit-length, stopping time correlates positively with Hamming weight (number of 1-bits).
