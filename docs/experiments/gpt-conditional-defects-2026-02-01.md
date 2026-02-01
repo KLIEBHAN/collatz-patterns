@@ -42,6 +42,20 @@ If Q(61,23) ≈ 0.85 while P(61,23) ≈ 0.125, TV ≳ 0.72 just from this one en
 
 ---
 
+## Sanity Check: Is 73% Real or Noise?
+
+Row-TV in a 162-state distribution is **unstable when the row has few samples**. Under the ideal model, if a row has only N_x transitions, expected TV is roughly ~const/√N_x (with const ≈ 0.84 for a geometric-shaped row).
+
+To see TV ≈ 0.73 from pure sampling noise, you'd need N_x to be tiny (single digits).
+
+**Interpretation:**
+- If N_{61} is large (hundreds+): 73% is **real structure** (terminal funnel bias)
+- If N_{61} is small: 73% could be mostly estimator noise
+
+Either way, 61 being "special" is about **where the process spends time**, not about primality.
+
+---
+
 ## The Pattern in Worst States
 
 They all line up with the terminal funnel:
@@ -55,6 +69,9 @@ They all line up with the terminal funnel:
 | 35 | 35 | 1 | 53 | 53 |
 | 77 | 77 | 3 | 29 | 29 |
 | 29 | 29 | 3 | 11 | 11 |
+| 25 | 25 | 2 | 19 | 19 |
+| 49 | 49 | 2 | 37 | 37 |
+| 134 | 377 | 2 | 283 | 40 |
 
 > "This is way too coherent to be a 'prime pattern.' It's a small-integer skeleton of the dynamics."
 
@@ -106,3 +123,24 @@ At B=100: those small integers are inside the killed set. When you see x=61 at B
 ## Meta-Lesson
 
 > "Experiment C is doing its job—it's showing you where your reduction breaks. At B=10 the breakage is exactly where you'd expect: in the terminal funnel. That's not a Collatz 'monster'; it's the Collatz map walking you to the exit."
+
+---
+
+## GPT's Recommended Next Steps
+
+### 1. Attach Counts and Error Bars
+For each of the "worst 10" rows, report N_x (row sample size). Then compute a null p-value by simulating N_x samples from P(x,·) and asking how often TV exceeds the observed. This separates "real defect" from "low-count hallucination."
+
+### 2. Print the Top Successors for x=61
+List the top 5 y with Q(61,y) and compare to P(61,y). If the terminal funnel story is right, you'll see:
+- Big spike at y=23
+- Suppression at y=92 and y=46
+
+### 3. Repeat Experiment C at Truly Bulk Boundary
+Run at B=10⁵ OR with forced-start large n≡x. This tells you whether the *bulk* one-step kernel is close statewise — which is what you actually want for a stability proof.
+
+---
+
+## Status
+
+**Verified:** The 73% spike at x=61 disappears at higher B (see Three-Phase Model in findings.md). This confirms the terminal funnel explanation — it's a boundary effect, not a deep mathematical obstruction.
