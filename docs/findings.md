@@ -177,6 +177,65 @@ Applied **Forced-Start methodology** to directly sample state 6397:
 
 ---
 
+---
+
+## 2026-02-01: Exact P_k Model — Key Findings
+
+### Background
+
+Following GPT's recommendation, we built an **exact rational P_k model** for the idealized Syracuse dynamics mod 3^k with i.i.d. geometric a(n).
+
+**Model:** X_{t+1} ≡ (3X_t + 1) · 2^{-A} (mod 3^k), where P(A=m) = 2^{-m}
+
+### Implementation
+
+Code: `src/exact_Pk.py`
+
+The infinite geometric sum collapses to a finite sum because 2^r ≡ 1 (mod 3^k) where r = φ(3^k) = 2·3^{k-1}.
+
+Transition matrix: P(x,y) = Σ_{m=1}^{r} w_m · 1{y = (3x+1)·2^{-m} mod 3^k}
+with weights w_m = 2^{r-m} / (2^r - 1)
+
+### Verified Results ✅
+
+| k | States | P^k = Π (Rank-1) | Eigenvalues | Drift |
+|---|--------|------------------|-------------|-------|
+| 2 | 6 | ✅ | {1:1, 0:5} | -0.2877 |
+| 3 | 18 | ✅ | {1:1, 0:17} | -0.2877 |
+| 4 | 54 | ✅ | {1:1, 0:53} | -0.2877 |
+
+**Key structural property:** P^k (not P!) is exactly rank-1, meaning all rows equal π^T.
+
+This follows from the **coupling argument**: For two chains X_t, X'_t with same noise sequence, the difference X_t - X'_t gains a factor of 3 per step (mod 3^k), so after k steps the difference is divisible by 3^k → chains have coalesced.
+
+### Major Discovery: π is NOT Uniform! 🔥
+
+| k | π Range | Factor |
+|---|---------|--------|
+| 2 | [0.032, 0.349] | 11× |
+| 3 | [0.006, 0.178] | 29× |
+| 4 | [0.002, 0.090] | 50× |
+
+The stationary distribution has **huge variance** — some residues are visited 50× more often than others!
+
+This was computed via LU-solve of (P^T - I)π = 0 with Σπ = 1.
+
+### Implications
+
+1. **Drift is constant:** All states have g(x) = log(3/4) ≈ -0.2877 ✅
+2. **Poisson equation:** Has finite-sum solution ψ = Σ_{t=0}^{k-1} P^t b
+3. **Spectral gap:** |λ₂| = 0 exactly (all non-trivial eigenvalues are 0)
+
+### Next Steps
+
+1. Understand π structure: Which residues have high/low mass? Why?
+2. Bridge to reality: Compare ideal P_k with empirical P̂_k from Syracuse
+3. Quantify gap: ||P̂_k - P_k|| in appropriate norm
+
+**Documentation:** `docs/experiments/gpt-exact-Pk-model.md`
+
+---
+
 ## Conjectures (Unproven)
 
 1. **Bit Density Conjecture:** For numbers of equal bit-length, stopping time correlates positively with Hamming weight (number of 1-bits).
