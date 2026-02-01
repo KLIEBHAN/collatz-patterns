@@ -236,6 +236,46 @@ This was computed via LU-solve of (P^T - I)π = 0 with Σπ = 1.
 
 ---
 
+## 2026-02-01: Why π is Not Uniform — GPT Deep Analysis (31m)
+
+### The Core Insight
+
+Our P_k model is a **3-adic random affine contraction system**:
+```
+f_a(x) = (3x + 1) / 2^a
+```
+
+In 3-adic metric |3|_3 = 1/3 < 1, so this contracts. The stationary measure π_k is the **Hutchinson measure** projected to mod 3^k — NOT the Haar measure (uniform).
+
+### Why -1 Has Maximum Mass
+
+The most frequent step a=1 (probability 1/2) has fixed point **x = -1**:
+- f_1(x) = (3x+1)/2 → fixed point at x = -1
+- This makes -1 a true attractor in 3-adic metric
+
+**Result:** Maximum π(x) always at -1 mod 3^k:
+- k=2: π(8) ≈ 0.349 (8 ≡ -1 mod 9)
+- k=3: π(26) ≈ 0.178 (26 ≡ -1 mod 27)
+- k=4: π(80) ≈ 0.090 (80 ≡ -1 mod 81)
+
+**Classification:** j = v_3(x+1) — larger j means closer to -1, higher mass.
+
+### Bridge to Real Syracuse
+
+Deterministically, T^k(n) mod 3^k depends only on the a-block (a_0, ..., a_{k-1}).
+
+**The proof task:** Show that a-blocks in real dynamics are close to i.i.d.-geometric (Tao approach: 3-adic character analysis).
+
+### Next Steps
+
+1. **Stability Lemma:** If ||Q_k - P_k|| < ε, drift stays negative
+2. **Fourier Comparison:** Identify frequencies with largest ideal-vs-real gap
+3. **Top-5 Proof Targets:** Characters driving the deviation
+
+**Documentation:** `docs/experiments/gpt-pi-structure-analysis-2026-02-01.md`
+
+---
+
 ## Conjectures (Unproven)
 
 1. **Bit Density Conjecture:** For numbers of equal bit-length, stopping time correlates positively with Hamming weight (number of 1-bits).
