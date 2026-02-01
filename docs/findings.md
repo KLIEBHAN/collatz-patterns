@@ -1045,3 +1045,67 @@ Predicted k=5 top targets: j=63 (3×21), j=99 (3×33)
 The obstruction landscape is richer than simple lifting. New dominant modes can emerge at each level.
 
 **Full analysis:** `docs/experiments/k5-fourier-analysis-2026-02-01.md`
+
+---
+
+## 🔥 2026-02-01: FUNDAMENTAL DISCOVERY — No-Conspiracy Lemma is IMPOSSIBLE
+
+### The Claim (Now Disproven)
+
+The original "No-Conspiracy Lemma" stated:
+> For some fixed (m, k, δ > 0), for all odd n > B₀:
+> V(T^m(n)) - V(n) ≤ -δ
+> where V(n) = log n + ψ(n mod 3^k)
+
+**This cannot hold for ANY fixed m, k and bounded ψ.**
+
+### The Counterexample Family
+
+Fix any m ≥ 1 and k ≥ 1. Choose n such that:
+```
+n ≡ -1 (mod 3^k)  AND  n ≡ -1 (mod 2^{m+1})
+```
+
+Such n exist and are arbitrarily large by CRT since gcd(3^k, 2^{m+1}) = 1.
+
+### Why It Fails
+
+1. **All first m steps have a=1:** The 2-adic structure forces ν₂(3n+1) = 1 for m consecutive steps
+2. **Growth by (3/2)^m:** The orbit follows the pure a=1 branch, growing exponentially
+3. **ψ cancels:** The 3-adic residue stays fixed at -1, so ψ(-1) - ψ(-1) = 0
+4. **V increases:** V(T^m(n)) - V(n) ≈ m·log(3/2) > 0
+
+### The True Insight
+
+> **"3-adic correction alone cannot control 2-adic conspiracies concentrated near the unstable 2-adic fixed point (-1) of the a=1 branch."**
+
+**The obstruction is 2-ADISCH, not 3-adisch!**
+
+### The Fix: Modified Lyapunov Function
+
+```
+V(n) = log n + c·r(n) + ψ(n mod 3^k)
+```
+
+where **r(n) = ν₂(n+1)** = 2-adic depth (how close n is to -1 in 2-adic metric).
+
+### The True No-Conspiracy Lemma (Recharge Cost)
+
+Prove that large jumps into deep -1 neighborhoods must be "paid for" by strong shrinkage.
+
+### What's Now Tractable
+
+1. ✅ **Negative result:** 3-adic ψ alone is insufficient (explicit counterexamples)
+2. ✅ Block-drift outside explicit sparse sets E
+3. ✅ "Almost all" version (Borel-Cantelli)
+4. ✅ Conditional Theorem with Recharge Axiom
+
+### Project Direction Change
+
+| Before | After |
+|--------|-------|
+| Focus on 3-adic mixing | Focus on 2-adic structure |
+| Fourier on mod 3^k | Hybrid Lyapunov with r(n) |
+| "Prove uniform drift" | "Prove recharge cost" |
+
+**Full analysis:** `docs/experiments/gpt-no-conspiracy-impossible-2026-02-01.md`
