@@ -1,6 +1,6 @@
 # Collatz Conjecture Analysis 🧮
 
-Systematic analysis of the Collatz conjecture using Markov chain methods, searching for patterns that might contribute to a proof.
+Systematic analysis of the Collatz conjecture using Markov chain methods and Fourier analysis, searching for patterns that might contribute to a proof.
 
 ## The Conjecture
 
@@ -14,39 +14,43 @@ Unproven since 1937. Erdős: "Mathematics is not yet ready for such problems."
 
 ## Current Status (2026-02-01)
 
-### ✅ Exact P_k Model — VERIFIED
+### 🔥 MAJOR DISCOVERY: Fixed Point Structure
 
-We built an **exact rational model** for Syracuse dynamics mod 3^k with i.i.d. geometric exponents.
+**The obstruction to proving Collatz is not random — it's the fixed point structure!**
 
-| k | States | P^k = Rank-1 | Eigenvalues | Drift |
-|---|--------|--------------|-------------|-------|
-| 2 | 6 | ✅ | {1:1, 0:5} | -0.288 |
-| 3 | 18 | ✅ | {1:1, 0:17} | -0.288 |
-| 4 | 54 | ✅ | {1:1, 0:53} | -0.288 |
+We discovered that b=1 (mod 3^k) has massively elevated P(a=2):
 
-**Key structural property:** P^k is exactly rank-1 after k steps (perfect mixing).
+| b | P(a=2\|b) | Ideal | Deviation |
+|---|-----------|-------|-----------|
+| **1** | **0.7391** | 0.25 | **+0.489** (3× ideal!) |
+| 25 | 0.6218 | 0.25 | +0.372 |
+| 17 | 0.5892 | 0.25 | +0.339 |
+| 242 (≡-1) | 0.2425 | 0.25 | ~0 |
 
-### 🔥 Major Discovery: π is NOT Uniform!
+**Why?** The a=2 branch x → (3x+1)/4 has fixed point x=1. Visits to b≡1 often come from actual n=1, which stays at 1 via a=2.
 
-The stationary distribution π_k is the **Hutchinson measure** of a 3-adic contraction system.
+### Fourier Analysis Summary (k=3 through k=7)
 
-| k | π Range | Max/Min Ratio | Maximum at |
-|---|---------|---------------|------------|
-| 2 | [0.03, 0.35] | 11× | x=8 ≡ -1 (mod 9) |
-| 3 | [0.01, 0.18] | 29× | x=26 ≡ -1 (mod 27) |
-| 4 | [0.002, 0.09] | 50× | x=80 ≡ -1 (mod 81) |
+| k | φ(3^k) | TV Dist | Top-2 Modes | Type | Pattern |
+|---|--------|---------|-------------|------|---------|
+| 3 | 18 | 2.0% | 7, 11 | NEW | — |
+| 4 | 54 | 3.0% | 21, 33 | LIFT | 3×7, 3×11 |
+| 5 | 162 | 5.2% | 79, 83 | NEW | Nyquist-neighbors |
+| 6 | 486 | 8.3% | 85, 401 | NEW | (m=28, r=1/2) |
+| 7 | 1458 | 11.3% | 929, 529 | NEW | (m=309/176, r=2/1) |
 
-**Why -1?** The map f₁(x) = (3x+1)/2 has fixed point x = -1, making it an attractor.
+**Key Pattern:**
+- NEW-DIGIT modes dominate each level (~80% of top-10)
+- Previous top modes become stable lifts (mid-tier ranks)
+- Lifts predicted correctly: k=6→k=7 lifts 255/1203, 711/747 all in top-12 ✅
 
-### 📊 Fourier Comparison: Ideal vs Empirical
+### Energy Decomposition
 
-| k | TV Distance | Top Proof Targets |
-|---|-------------|-------------------|
-| 2 | 0.8% | j=2,4 |
-| 3 | 2.0% | j=7,11 |
-| 4 | 3.0% | j=21,33 |
+At each level, discrepancy δ = μ - π decomposes into:
+- **Coarse (inherited):** ~25-30%
+- **Within-lift (new digit):** ~70-75%
 
-**All deviations < 3%** — real Syracuse is close to the ideal model!
+The within-lift component β_r(b) captures how mass splits among lifts. Top contributor: **b=1** (the a=2 fixed point).
 
 ## Project Structure
 
@@ -54,105 +58,112 @@ The stationary distribution π_k is the **Hutchinson measure** of a 3-adic contr
 collatz/
 ├── README.md
 ├── src/
-│   ├── exact_Pk.py            # 🆕 Exact P_k model (rational arithmetic)
-│   ├── analyze_pi_structure.py # 🆕 π structure analysis
-│   ├── fourier_comparison.py   # 🆕 Ideal vs empirical Fourier
-│   ├── analyze.py              # Range analysis
-│   ├── oddmap_stats.py         # State-dependent drift (M2-M4)
-│   ├── compute_psi.py          # ψ-correction solver
-│   └── plot_results.py         # Visualization
-├── data/                       # Analysis outputs (gitignored)
+│   ├── exact_Pk.py              # Exact P_k model (rational arithmetic)
+│   ├── k6_fourier_fast.py       # k=6 Fourier analysis
+│   ├── k7_fourier_analysis.py   # k=7 Fourier analysis
+│   ├── beta_spectrum_k6.py      # β-spectrum decomposition
+│   ├── analyze_b1_dominance.py  # 🔥 P(a|b) analysis
+│   ├── lift_splitting_analysis.py # k=5 lift decomposition
+│   └── verify_fourier_relationship.py
+├── data/
+│   ├── k6_fourier_results.json
+│   ├── k7_fourier_results.json
+│   ├── beta_spectrum_k6.json
+│   └── b1_dominance_analysis.json
 └── docs/
-    ├── theory.md               # Technical framework
-    ├── findings.md             # All discoveries
-    └── experiments/            # Detailed experiment docs
-        ├── exact-Pk-verification-2026-02-01.md
-        ├── fourier-comparison-2026-02-01.md
-        ├── gpt-pi-structure-analysis-2026-02-01.md
-        └── [archive & gpt-raw folders]
+    ├── findings.md              # All discoveries (detailed)
+    ├── theory.md                # Mathematical framework
+    └── experiments/
+        ├── gpt-k6-deep-analysis-2026-02-01.md  # GPT's quotient+kernel theory
+        ├── k7-analysis-2026-02-01.md
+        └── [more experiment docs]
 ```
+
+## Key Theoretical Framework
+
+### The j = 3m + r Decomposition (GPT's Insight)
+
+For character index j at level k:
+- **r = j mod 3**: kernel twist (r=0: lift, r=1,2: new-digit)
+- **m = (j-r)/3**: base frequency on G_{k-1}
+
+Example: j=85 at k=6 decodes as:
+- 85 = 3×28 + 1 → (m=28, r=1)
+- Base frequency m=28 has order 81 in G_5 (deep 3-adic character)
+
+### The β-Spectrum
+
+Within-lift bias functions:
+```
+β_1(b) = Σ_ℓ ω^ℓ (μ(b,ℓ) - π(b,ℓ))
+β_2(b) = Σ_ℓ ω^{2ℓ} (μ(b,ℓ) - π(b,ℓ))
+```
+
+The Fourier spectrum of β_r captures which base frequencies dominate.
+
+### The Fixed Point Mechanism
+
+The a=2 branch f_2(x) = (3x+1)/4 has fixed point x=1.
+
+When Syracuse visits b ≡ 1 (mod 3^k):
+- Many visits come from actual n = 1 (or small multiples)
+- These stay at 1 via the a=2 branch
+- Result: P(a=2|b=1) ≈ 0.74 instead of 0.25
+
+**This is the smoking gun for why β_1(b) peaks at b=1.**
 
 ## Proof Roadmap
 
-Based on GPT 5.2 Pro analysis + expert theoretical validation:
-
 ### Completed ✅
-1. **Exact P_k model** — rational arithmetic, verified rank-1
-2. **π structure** — Hutchinson measure, -1 is attractor
-3. **Fourier comparison** — identified proof target frequencies
-4. **Theoretical validation** — results confirmed consistent with theory
-5. **Stability Lemma formulated** — paper-ready statement with constants
+1. Exact P_k model with rational arithmetic
+2. π structure (Hutchinson measure, -1 is attractor)
+3. Fourier comparison k=3 through k=7
+4. β-spectrum decomposition (coarse vs within-lift)
+5. b=1 dominance explained via P(a=2|b) measurement
+6. Lift prediction verified (k=6 → k=7)
 
-### Key Insight: Lift Structure (Nuanced) 🔬
-The k=4 worst frequencies (j=21,33) are lifted from k=3 (j=7,11):
-- 21 = 3×7, 33 = 3×11 ✅
-
-**But k=5 showed new pattern:**
-- Predicted: j=63,99 (lifts)
-- Actual: j=79,83 (NEW characters, not divisible by 3!)
-- j=63,99 rank #7-8, not #1-2
-
-**Implication:** New dominant modes can emerge; not all are inherited.
-
-### Next Steps 🎯
-6. ~~Test k=5 prediction~~ ✅ Done — partially refuted
-7. **Investigate j=79,83** — why do these specific indices dominate at k=5?
-8. **Measure kernel error** — sup_x TV(Q(x,·), P(x,·)) not just marginal
-9. **Test k=6** — do 79,83 lift to 237,249, or do new modes emerge?
+### Open Questions
+1. Why does the ratio |Δ̂(j)|/|FT[β_r](m)| vary (0.1 to 5.0)?
+2. Can we theoretically bound P(a=2|b=1) deviation?
+3. How to translate fixed-point structure into proof-theoretic bounds?
 
 ### The Bridge to Proof
-> Show that a-blocks in real Syracuse are close to i.i.d.-geometric  
-> (or their pushforward to mod 3^k is close to π_k)
-
-**Status:** At the point where measurement becomes a lemma-machine.
-
-## Key Findings Summary
-
-| Finding | Status |
-|---------|--------|
-| Global drift E[Δlog n] = -0.18 | ✅ Verified |
-| ψ-correction works for all states | ✅ Verified (outlier was artifact) |
-| P^k is rank-1 (perfect mixing) | ✅ Proven for ideal model |
-| π concentrates at -1 mod 3^k | ✅ Verified |
-| Real dynamics ≈ ideal model (TV < 3%) | ✅ Empirically confirmed |
-| Fourier targets are lifted across k | ⚠️ Partial: k=3→k=4 yes, k=4→k=5 no |
-| Stability lemma formulated | ✅ Paper-ready with constants |
-| k=5 shows new dominant modes | 🔥 j=79,83 (not lifts of j=21,33) |
+> Show that deviations from ideal i.i.d. geometric behavior are bounded,  
+> and that the fixed-point structure at b=1 doesn't prevent global descent.
 
 ## Quick Start
 
 ```bash
-# Setup
 cd collatz
 python -m venv .venv
 source .venv/bin/activate
-pip install numpy scipy sympy
+pip install numpy scipy sympy matplotlib
 
-# Run exact P_k analysis
-python src/exact_Pk.py
+# Run k=7 Fourier analysis
+python src/k7_fourier_analysis.py
 
-# Analyze π structure
-python src/analyze_pi_structure.py
+# Analyze b=1 dominance
+python src/analyze_b1_dominance.py
 
-# Compare Fourier coefficients
-python src/fourier_comparison.py
+# β-spectrum decomposition
+python src/beta_spectrum_k6.py
 ```
 
 ## Documentation
 
 | Document | Description |
 |----------|-------------|
-| [findings.md](docs/findings.md) | All discoveries & results |
+| [findings.md](docs/findings.md) | Complete chronological discoveries |
 | [theory.md](docs/theory.md) | Mathematical framework |
-| [experiments/](docs/experiments/) | Detailed analysis docs |
-| [theoretical-validation](docs/experiments/theoretical-validation-2026-02-01.md) | 🆕 Stability lemma & norm analysis |
+| [GPT k=6 Analysis](docs/experiments/gpt-k6-deep-analysis-2026-02-01.md) | Quotient+kernel decomposition |
+| [k=7 Results](docs/experiments/k7-analysis-2026-02-01.md) | Lift predictions verified |
 
 ## Links
 
-- [Moltbook Discussion](https://www.moltbook.com/post/a39917c2-1c0c-4e7f-aa25-a1d2f56cab1f)
+- [GitHub Repository](https://github.com/KLIEBHAN/collatz-patterns)
 - [Wikipedia: Collatz Conjecture](https://en.wikipedia.org/wiki/Collatz_conjecture)
 - [Tao's "Almost All" Paper](https://arxiv.org/abs/1909.03562)
 
 ---
-*Project started: 2026-01-31 by [fabi-hummer](https://moltbook.com/u/fabi-hummer)*  
-*Latest update: 2026-02-01 — Stability lemma, lift-structure hypothesis, theoretical validation*
+*Project started: 2026-01-31*  
+*Latest update: 2026-02-01 — b=1 fixed point discovery, k=7 analysis, β-spectrum*
