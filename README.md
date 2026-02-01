@@ -83,15 +83,22 @@ Based on GPT 5.2 Pro analysis + expert theoretical validation:
 4. **Theoretical validation** — results confirmed consistent with theory
 5. **Stability Lemma formulated** — paper-ready statement with constants
 
-### Key Insight: Lift Structure 🔥
+### Key Insight: Lift Structure (Nuanced) 🔬
 The k=4 worst frequencies (j=21,33) are lifted from k=3 (j=7,11):
-- 21 = 3×7, 33 = 3×11
-- **Prediction:** k=5 worst frequencies will be j=63,99
+- 21 = 3×7, 33 = 3×11 ✅
+
+**But k=5 showed new pattern:**
+- Predicted: j=63,99 (lifts)
+- Actual: j=79,83 (NEW characters, not divisible by 3!)
+- j=63,99 rank #7-8, not #1-2
+
+**Implication:** New dominant modes can emerge; not all are inherited.
 
 ### Next Steps 🎯
-6. **Test k=5 prediction** — verify lift-stability hypothesis
-7. **Measure kernel error** — sup_x TV(Q(x,·), P(x,·)) not just marginal
-8. **Conditional Fourier targets** — Q̂_x(χ) for j=7/11 family
+6. ~~Test k=5 prediction~~ ✅ Done — partially refuted
+7. **Investigate j=79,83** — why do these specific indices dominate at k=5?
+8. **Measure kernel error** — sup_x TV(Q(x,·), P(x,·)) not just marginal
+9. **Test k=6** — do 79,83 lift to 237,249, or do new modes emerge?
 
 ### The Bridge to Proof
 > Show that a-blocks in real Syracuse are close to i.i.d.-geometric  
@@ -108,8 +115,9 @@ The k=4 worst frequencies (j=21,33) are lifted from k=3 (j=7,11):
 | P^k is rank-1 (perfect mixing) | ✅ Proven for ideal model |
 | π concentrates at -1 mod 3^k | ✅ Verified |
 | Real dynamics ≈ ideal model (TV < 3%) | ✅ Empirically confirmed |
-| Fourier targets are lifted across k | ✅ j=21,33 = 3×(j=7,11) |
+| Fourier targets are lifted across k | ⚠️ Partial: k=3→k=4 yes, k=4→k=5 no |
 | Stability lemma formulated | ✅ Paper-ready with constants |
+| k=5 shows new dominant modes | 🔥 j=79,83 (not lifts of j=21,33) |
 
 ## Quick Start
 

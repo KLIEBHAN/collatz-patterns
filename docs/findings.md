@@ -347,4 +347,30 @@ If conditional targets small for j=7/11 family → we have the bridge for the st
 
 3. **Prime Shortcut Conjecture:** Numbers with many small prime factors reach 1 faster because they encounter more "halving shortcuts" through powers of 2.
 
-4. **Lift-Stability Conjecture (NEW):** The worst Fourier deviations at level k+1 are always lifts (×3) of level k targets, not newly generated modes.
+4. **Lift-Stability Conjecture (PARTIALLY REFUTED):** The worst Fourier deviations at level k+1 are sometimes lifts (×3) of level k targets, but new dominant modes can emerge. Pattern: lifts dominate at even→odd (k=3→k=4), but new modes appear at odd→even (k=4→k=5 gave j=79,83 instead of predicted j=63,99).
+
+---
+
+## 2026-02-01: k=5 Fourier Analysis — Lift-Structure Test
+
+### Hypothesis
+Predicted k=5 top targets: j=63 (3×21), j=99 (3×33)
+
+### Result: PARTIALLY REJECTED ❌
+
+**Actual k=5 top targets:** j=79, j=83
+
+| Rank | j | |Δ| | Notes |
+|------|---|-----|-------|
+| 1-2 | 79,83 | 0.0364 | **NEW** (not lifts) |
+| 7-8 | 63,99 | 0.0218 | Predicted lifts |
+
+### Key Finding
+- j=79,83 are NOT divisible by 3 → new characters, not inherited
+- j=63,99 still significant (#7-8), but not dominant
+- Pattern: Lift structure holds at k=3→k=4 but breaks at k=4→k=5
+
+### Implication
+The obstruction landscape is richer than simple lifting. New dominant modes can emerge at each level.
+
+**Full analysis:** `docs/experiments/k5-fourier-analysis-2026-02-01.md`

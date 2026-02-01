@@ -196,7 +196,7 @@ def main():
     
     results = []
     
-    for k in [2, 3, 4]:
+    for k in [2, 3, 4, 5]:
         print(f"\n{'='*70}")
         print(f"k = {k}, M = 3^{k} = {3**k}")
         print(f"{'='*70}")
@@ -217,7 +217,7 @@ def main():
         ideal_coeffs = ideal_fourier_coefficients(pi, states, characters)
         
         # Sample empirical distribution
-        n_samples = 50000 if k <= 3 else 100000
+        n_samples = 50000 if k <= 3 else (100000 if k == 4 else 200000)
         print(f"Sampling empirical distribution ({n_samples} samples)...")
         emp_dist = sample_empirical_distribution(k, n_samples=n_samples, t_burn=50)
         print(f"  Unique states visited: {len(emp_dist)}")
@@ -303,6 +303,43 @@ def main():
     with open('data/fourier_comparison.json', 'w') as f:
         json.dump(results, f, indent=2, default=float)
     print("\nResults saved to data/fourier_comparison.json")
+    
+    # Lift-structure analysis
+    print("\n" + "="*70)
+    print("🔬 LIFT-STRUCTURE ANALYSIS")
+    print("="*70)
+    print("\nHypothesis: Top targets at k+1 are lifts (×3) of top targets at k")
+    print("Prediction: k=5 top targets should be j=63 (3×21) and j=99 (3×33)\n")
+    
+    if len(results) >= 2:
+        for i in range(1, len(results)):
+            r_prev = results[i-1]
+            r_curr = results[i]
+            k_prev = r_prev['k']
+            k_curr = r_curr['k']
+            
+            prev_targets = set(d['j'] for d in r_prev['top5_targets'][:2])
+            curr_targets = set(d['j'] for d in r_curr['top5_targets'][:2])
+            
+            # Check if current targets are 3× previous targets
+            lifted = set(3 * j for j in prev_targets)
+            
+            print(f"k={k_prev} → k={k_curr}:")
+            print(f"  k={k_prev} top-2: {sorted(prev_targets)}")
+            print(f"  Predicted lifts (×3): {sorted(lifted)}")
+            print(f"  k={k_curr} top-2: {sorted(curr_targets)}")
+            
+            overlap = lifted & curr_targets
+            if overlap:
+                print(f"  ✅ CONFIRMED: {sorted(overlap)} are lifted!")
+            else:
+                print(f"  ❌ No direct lift match")
+            
+            # Also check conjugates
+            phi_curr = 2 * 3**(k_curr - 1)
+            conj_targets = set(phi_curr - j for j in curr_targets if j > 0)
+            print(f"  Conjugates of k={k_curr} top-2: {sorted(conj_targets)}")
+            print()
 
 
 if __name__ == "__main__":
