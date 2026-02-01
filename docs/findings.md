@@ -634,9 +634,163 @@ The true 3-adic Fourier obstruction landscape is:
 
 **This means our entire understanding of the proof targets needs revision!**
 
+### New Top Mode Analysis (j=149, 337)
+
+Decoding the new dominant modes:
+- **j=149:** 149 = 3×49 + 2 → (m=49, r=2) on G₅
+- **j=337:** 337 = 3×112 + 1 → (m=112, r=1) on G₅
+
+These are conjugate pairs (149 + 337 = 486 = φ(3⁶)).
+
+**Open question:** What's special about m=49 and m=112? Are these related to the "true" 3-adic structure without absorption artifacts?
+
 ### Files
 - `src/k6_fourier_killed.py`
 - `data/k6_fourier_killed.json`
+
+---
+
+## 2026-02-01: Twist-Corrected β→Fourier — First Attempt ⚠️
+
+### Background
+
+GPT explained that Δ̂(3m+r) ≠ FT[β_r](m) due to a missing twist factor:
+```
+Δ̂(3m+r) = (1/3) Σ_q β̂_r(q) τ̂_r(m-q)
+```
+where τ_r(u) = exp(-2πi r u / (3n))
+
+### Implementation
+
+`src/twist_corrected_fourier.py` implements the corrected formula.
+
+### Result: DID NOT IMPROVE ❌
+
+| Metric | Old (uncorrected) | New (twist-corrected) |
+|--------|-------------------|----------------------|
+| CV (ratio variance) | 1.04 | **1.48** |
+| Mean ratio | 1.55 | 5.64 |
+
+The coefficient of variation got **worse**, not better!
+
+### Possible Issues
+1. Indexing convention mismatch
+2. Normalization factor off
+3. Discrete log coordinate vs residue coordinate confusion
+4. The formula needs refinement
+
+### Diagnosis via Unit Test
+
+The exponent-coordinate formula is **EXACT** (error ~10⁻¹⁷):
+```
+δ̂(3m+r) = Σ_{u=0}^{n-1} β_r(u) exp(-2πi(3m+r)u/(3n))
+```
+
+**Conclusion:** Bug is in residue-lift implementation, not in the formula.
+The issue is using additive lifts `b + ℓ·3^(k-1)` instead of multiplicative kernel structure.
+
+**Files:** `src/twist_unit_test.py`
+
+---
+
+## 2026-02-01: "No Lift" Claim Verified ✅
+
+### GPT's Prediction
+> "If TV(ρ#μ₆, π₅) is tiny, the 'no lifts in top-20' is explained."
+
+### Results
+
+| Metric | Value |
+|--------|-------|
+| TV(μ₆, π₆) | 2.75% |
+| TV(ρ#μ₆, π₅) | **1.44%** |
+| TV(μ₅, π₅) | **1.44%** |
+
+**Key finding:** ρ#μ₆ ≈ μ₅ — the projected k=6 measure matches k=5 killed measure exactly!
+
+### Energy Split at k=6 Killed
+
+| Component | Energy | Percentage |
+|-----------|--------|------------|
+| Coarse (inherited) | 3.77e-06 | **25.3%** |
+| Within-lift (NEW) | 1.11e-05 | **74.7%** |
+
+### Interpretation
+
+1. Coarse mismatch is NOT zero (25%), but within-lift dominates (75%)
+2. Lifts still exist — they're just not the largest offenders
+3. Top-20 selects by |Δ̂(j)| magnitude, not total energy
+4. 75% energy spread across many NEW-DIGIT modes → they dominate rankings
+
+**Files:** `src/verify_no_lift_claim.py`, `data/no_lift_verification.json`
+
+---
+
+## 2026-02-01: β Top Contributors Under Killed Sampling
+
+### The Big Shift: b=1 is now Rank #125!
+
+Under killed sampling, b=1 dropped from #1 to **#125** in the β₁ ranking.
+
+### New Top Contributors
+
+| Rank | b | |β₁(b)| | Key Deviation |
+|------|---|--------|---------------|
+| 1 | 91 | 0.00122 | P(a=2) +5.6%, Lift ℓ=0 +13.6% |
+| 2 | 190 | 0.00118 | P(a=2) +8.7%, Lift ℓ=1 +22.5% |
+| 3 | 82 | 0.00115 | **P(a=4) +20%!**, Lift ℓ=1 +24.2% |
+| 4 | 76 | 0.00089 | Near ideal P(a|b), Lift ℓ=1 +20% |
+| 5 | 152 | 0.00086 | Near ideal P(a|b), Lift ℓ=2 +18% |
+
+### Key Insight: Lift-Index Bias Dominates!
+
+The decontaminated β-bias comes primarily from **lift-choice imbalance**, not a-value deviation:
+- b=91: ℓ=0 visited 47% (vs ideal 33%)
+- b=190: ℓ=1 visited 56%
+- b=82: ℓ=1 visited 58%
+- b=152: ℓ=2 visited 52%
+
+Some residues (b=76, b=152) have near-ideal P(a|b) but strong lift bias!
+
+### Interpretation
+
+The "true" 3-adic obstruction after removing absorption is:
+1. **Not about the a=2 fixed point** (that was absorption)
+2. **About systematic lift preferences** — the Syracuse map has bias in which mod-3^k lift it visits
+
+**Files:** `src/beta_top_contributors_killed.py`, `data/beta_top_contributors_killed.json`
+
+---
+
+## 2026-02-01: B-Sweep Analysis — Spectrum Not Yet Stable! ⚠️
+
+### Results
+
+| B | TV | Top-2 Modes | Type | Dom. m |
+|---|-----|-------------|------|--------|
+| 10 | 9.85% | 401, 85 | NEW | 133 |
+| 100 | 3.26% | 301, 185 | NEW | 100 |
+| 1000 | 2.19% | 273, 213 | **LIFT** | 27 |
+| 10000 | 1.93% | 387, 99 | **LIFT** | 71 |
+| 100000 | 1.91% | 341, 145 | NEW | 113 |
+
+### Key Findings
+
+1. **TV drops 5×:** From 9.85% (B=10) to 1.91% (B=100000)
+2. **LIFT modes return at high B!** — The "no lifts" finding at B=100 was still boundary-contaminated
+3. **Spectrum not stable:** Dominant base frequency m wanders: 133 → 100 → 27 → 71 → 113
+4. **TV stabilizes** around 1.9% for B ≥ 10000
+
+### Interpretation
+
+Even B=100 wasn't enough to remove all boundary effects. The "true" bulk spectrum:
+- May have both LIFT and NEW modes competing
+- Still changes as we push B higher
+- TV converges to ~1.9% (genuine 3-adic obstruction?)
+
+### Next: Need even higher B or larger starting n
+
+**Files:** `src/b_sweep_analysis.py`, `data/b_sweep_results.json`
 
 ---
 
