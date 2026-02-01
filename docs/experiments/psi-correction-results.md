@@ -224,6 +224,22 @@ Full analysis: [gpt-analysis-extended-run.md](gpt-analysis-extended-run.md)
 
 ---
 
+## GPT 5.2 Pro Analysis v2 (2026-02-01 06:15 UTC, 18m thinking)
+
+**Kritische Einsicht:** ψ-Drift < 0 für ALLE States ist mathematisch unmöglich in einer ergodischen Markov-Chain! Der Poisson-Trick macht den Drift KONSTANT (≈ḡ), nicht überall negativ.
+
+**Implikation:** Die ~10⁻⁵ Variation ist Solver-Residuum, kein strukturelles Problem. Der "Global drift -4.6e-06" ist das Residuum nach Zentrierung, NICHT E[Δlog n] (das ist ~-0.18 bis -0.24).
+
+**Empfohlene nächste Schritte:**
+1. Poisson-Residual ||r||∞ ausgeben
+2. Hold-out Evaluation (Train/Test Split)
+3. m-Step Drift (m=20,50,100)
+4. Falls nötig: LP-basierte robuste Bounds
+
+Full analysis: [gpt-analysis-extended-run-v2.md](gpt-analysis-extended-run-v2.md)
+
+---
+
 *Analysis date: 2026-02-01*
 *Extended run completed — drift reduced to ~10⁻⁵ level*
-*GPT analysis: "Good enough to proceed"*
+*GPT v2 analysis: "ψ macht Drift konstant, nicht negativ — das Residuum ist Numerik"*
