@@ -339,6 +339,84 @@ If conditional targets small for j=7/11 family → we have the bridge for the st
 
 ---
 
+---
+
+## 2026-02-01: k=6 β-Spectrum Analysis — Verifying GPT's Framework
+
+### Background
+
+GPT explained that j=85/401 at k=6 are not mysterious — they encode:
+- **kernel twist** r = j mod 3 (r=1 or r=2 for new-digit modes)
+- **base frequency** m = (j-r)/3 on the base group G₅
+
+So j=85 = 3×28 + 1 means (m=28, r=1).
+
+### Implementation
+
+We implemented GPT's suggested β-spectrum analysis (`src/beta_spectrum_k6.py`):
+- Compute β₁(b), β₂(b) for each base class b ∈ G₅
+- Compute Fourier transforms FT[β_r](m) over G₅
+- Compare with direct Fourier Δ̂(j)
+
+### Results
+
+**Energy Split at k=6:**
+- Coarse (inherited from k=5): **26.1%**
+- Within-lift (β₁ + β₂): **73.9%**
+
+Consistent with k=5 (76% within-lift). Pattern holds!
+
+**Top Contributors to β₁(b):**
+
+| Rank | b | |β₁(b)| | Notes |
+|------|---|--------|-------|
+| 1 | **1** | 0.00681 | a=2 fixed point! |
+| 2 | 17 | 0.00523 | |
+| 3 | 5 | 0.00475 | |
+| 36 | 242 | ... | ≡ -1 (mod 243) |
+
+**CONFIRMED:** b=1 is the #1 contributor, exactly as GPT predicted!
+
+This is the fixed point of the a=2 branch: x = (3x+1)/4 ⟺ x = 1
+
+### Critical Discovery: β-Spectrum ≠ Direct Fourier Ranking
+
+GPT claimed: Δ̂(3m+r) ∝ FT[β_r](m)
+
+Our verification (`src/verify_fourier_relationship.py`) shows:
+- The ratio |Δ̂(j)| / |FT[β_r](m)| varies from **0.1 to 5.0**
+- NOT a constant factor!
+
+**Implication:**
+- m=28 is only rank #77 in the β₁-spectrum
+- But j=85 is rank #1 in full Fourier
+- A non-trivial "amplification factor" (~3x for m=28) exists
+
+### Key Insights
+
+1. **GPT's qualitative picture is correct:**
+   - Within-lift dominates
+   - b=1 is the hotspot (a=2 fixed point)
+   - j=85/401 encode (m=28, r=1) and (m=133, r=2)
+
+2. **The quantitative relationship is more complex:**
+   - FT[β_r](m) doesn't directly give Δ̂(3m+r) rankings
+   - There's a frequency-dependent amplification factor
+
+3. **Physical interpretation:**
+   - b=1 being top contributor = systematic deviation near a=2 fixed point
+   - The Syracuse dynamics has structure around this dynamical fixed point
+
+### Open Questions
+
+1. What determines the amplification factor?
+2. Can we predict which m values get amplified?
+3. k=7: Will 255=3×85, 1203=3×401 be top lifts?
+
+**Full documentation:** `docs/experiments/gpt-k6-deep-analysis-2026-02-01.md`
+
+---
+
 ## Conjectures (Unproven)
 
 1. **Bit Density Conjecture:** For numbers of equal bit-length, stopping time correlates positively with Hamming weight (number of 1-bits).
