@@ -73,11 +73,25 @@ The Collatz problem likely lives in these harder-to-measure aspects, not in the 
 
 **Note:** The spectrum (which modes are "top") changes with B — this is expected. What converges is the magnitude (TV).
 
-### ❓ Open Questions
+### 📊 Signal vs B Curve (Experiment A)
 
-1. **Where is the real structure?** Need to test smaller B with same noise analysis
-2. **Conditional behavior:** Does Q(x,·) also match ideal, or only the marginal?
-3. **Scale dependence:** At what n-scale does non-ideal behavior begin?
+Where does real structure live? We fitted signal(B) by separating noise:
+
+| B | True Signal | Interpretation |
+|---|-------------|----------------|
+| 10 | **9.63%** | Real structure! |
+| 100 | 2.39% | Decaying |
+| 1000 | 0.84% | Almost gone |
+| 10000 | 0.00% | Noise only |
+| 100000 | 0.37% | Noise only |
+
+**Conclusion:** Real 3-adic structure lives at **small n** (low B). Bulk is ideal.
+
+### ❓ Remaining Questions
+
+1. **Conditional behavior:** Does Q(x,·) also match ideal, or only the marginal?
+2. **Small-n structure:** What exactly causes the 9.6% signal at B=10?
+3. **Proof bridge:** How to handle boundary region in a proof?
 
 ---
 

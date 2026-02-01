@@ -842,6 +842,41 @@ The Collatz difficulty likely lives in these harder-to-measure aspects.
 
 ---
 
+## 2026-02-01: Signal vs B Analysis — Structure Lives at Small n!
+
+### Experiment A (GPT recommendation)
+
+For each B, fit TV² = signal² + c/N to separate true signal from noise.
+
+### Results
+
+| B | Signal | Signal % | Noise Coeff |
+|---|--------|----------|-------------|
+| 10 | 0.0963 | **9.63%** | 6.98 |
+| 100 | 0.0239 | 2.39% | 8.60 |
+| 1000 | 0.0084 | 0.84% | 8.27 |
+| 10000 | 0.0000 | 0.00% | 8.25 |
+| 100000 | 0.0037 | 0.37% | 7.95 |
+
+### Key Finding
+
+**Clear signal(B) decay:**
+- B=10: 9.6% true signal
+- B=100: 2.4% signal
+- B≥1000: <1% (essentially noise)
+
+**Conclusion:**
+> Real 3-adic structure lives at **small n** (low B boundary).
+> Bulk behavior (high B) is essentially ideal.
+
+This matches GPT's prediction: the Collatz difficulty hides in boundary/small-n behavior, not bulk.
+
+### Files
+- `src/signal_vs_B_analysis.py`
+- `data/signal_vs_B.json`
+
+---
+
 ## Conjectures (Unproven)
 
 1. **Bit Density Conjecture:** For numbers of equal bit-length, stopping time correlates positively with Hamming weight (number of 1-bits).
