@@ -20,6 +20,7 @@ collatz/
 ├── src/
 │   ├── analyze.py             # Range analysis (supports --cache-limit)
 │   ├── oddmap_stats.py        # State-dependent drift analysis (M2-M4)
+│   ├── compute_psi.py         # ψ-correction (Poisson equation solver)
 │   ├── plot_results.py        # Turn result JSON into plots/CSVs
 │   └── analyze_extended.py    # Extended pattern analysis
 ├── data/                      # Local outputs (gitignored)
@@ -88,6 +89,26 @@ Highly composite numbers collapse faster due to more halving opportunities.
 - **n = 27** (= 3³): 111 steps for a 5-bit number (ratio 23.3×)
 - **n = 31**: 106 steps (ratio 21.4×)
 - **n = 41**: 109 steps (ratio 20.3×)
+
+## Proof-Directed Results (Latest)
+
+### ψ-Correction Analysis (2026-02-01)
+
+We computed the Poisson correction ψ for the residue-corrected potential V(n) = log(n) + ψ(n mod 3^k).
+
+**Run:** 500k samples, k=8, t_burn=34, t_max=50
+
+| Metric | Value | Status |
+|--------|-------|--------|
+| Global drift | -0.182 | ✅ Negative |
+| Max raw drift | +0.451 | Before correction |
+| Max corrected drift | +0.180 | ⚠️ Still positive |
+| States with positive drift | 1 / 4,374 | 🎯 Almost there! |
+| π-mass of positive states | ≈ 0 | ✅ Negligible |
+
+**Interpretation:** The correction works for 99.98% of states by probability mass. Only one state (practically never visited) remains problematic.
+
+See [psi-correction-results.md](docs/experiments/psi-correction-results.md) for details.
 
 ## Open Questions
 
