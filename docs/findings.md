@@ -411,9 +411,49 @@ Our verification (`src/verify_fourier_relationship.py`) shows:
 
 1. What determines the amplification factor?
 2. Can we predict which m values get amplified?
-3. k=7: Will 255=3×85, 1203=3×401 be top lifts?
+3. ~~k=7: Will 255=3×85, 1203=3×401 be top lifts?~~ → **CONFIRMED!**
 
 **Full documentation:** `docs/experiments/gpt-k6-deep-analysis-2026-02-01.md`
+
+---
+
+## 2026-02-01: k=7 Analysis — Lift Predictions Confirmed! ✅
+
+### Predictions vs Results
+
+| Prediction | j | Rank | Status |
+|------------|---|------|--------|
+| 3×85 | 255 | 9 | ✅ |
+| 3×401 | 1203 | 10 | ✅ |
+| 3×237 | 711 | 11 | ✅ |
+| 3×249 | 747 | 12 | ✅ |
+
+**All 4 predicted lifts in Top-12!**
+
+### New Dominant Modes
+
+Top-2 at k=7: j=929/529 (NEW-DIGIT)
+- 929 = 3×309 + 2 → (m=309, r=2) on G_6
+- 529 = 3×176 + 1 → (m=176, r=1) on G_6
+
+### Pattern Summary
+
+| k | Top-2 | Type | Previous Lifts |
+|---|-------|------|----------------|
+| 5 | 79/83 | NEW | — |
+| 6 | 85/401 | NEW | 237/249 (3-4) |
+| 7 | 929/529 | NEW | 255/1203 (9-10), 711/747 (11-12) |
+
+**Consistent pattern:**
+- NEW-DIGIT modes dominate (~80% of top-10)
+- Lifts are stable but not dominant
+- Each level generates fresh within-lift bias
+
+### Interesting: j=85 Persists at k=7
+
+j=85 appears at rank 13-14 (as itself, not lifted). Since gcd(85,3)=1, it embeds directly into G_7.
+
+**Full documentation:** `docs/experiments/k7-analysis-2026-02-01.md`
 
 ---
 
