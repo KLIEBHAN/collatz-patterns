@@ -105,6 +105,7 @@ collatz-patterns/
 ├── docs/
 │   ├── findings.md             # Complete experimental log
 │   ├── theory.md               # Mathematical framework
+│   ├── gpt-deep-research-2026-02-02.md  # GPT 5.2 Pro analysis
 │   └── experiments/            # Detailed analyses
 │       ├── gpt-no-conspiracy-impossible-*.md
 │       ├── gpt-key-lemma-attack-vectors-*.md
@@ -133,6 +134,18 @@ python src/noise_floor_test.py   # Verify bulk is noise
 
 ## The Path Forward
 
+### GPT 5.2 Pro Deep Research (2026-02-02)
+
+Full analysis: [`docs/gpt-deep-research-2026-02-02.md`](docs/gpt-deep-research-2026-02-02.md)
+
+**Key Validation:**
+> "You've identified the right mechanism (fuel = 2-adic depth, a=1 burns it, refuels are rare)"
+
+**The Wall:**
+> "Making RTD deterministic for every integer orbit is tantamount to proving a very strong '2-adic genericity/normality' property for each positive integer inside Z₂ — **about as hard as the Collatz conjecture itself**."
+
+**Why:** Integer orbits are measure-zero in Z₂. The ergodic theorem tells us nothing about them.
+
 ### Recommended Strategy
 
 1. ~~Falsify (K)~~ ✅ Done — holds empirically
@@ -140,11 +153,22 @@ python src/noise_floor_test.py   # Verify bulk is noise
 3. 🎯 **RTD Lemma** — the correct target
 4. Use **LTE** as mathematical lever
 
+### Realistic Next Target: Averaged RTD Theorem
+
+> "For most starting values n ≤ X (in logarithmic density), the orbit hits depth ≥ R within O(2^R) accelerated steps."
+
+**Approach:**
+- Entropy decrement methods
+- Show orbit doesn't correlate strongly with indicator of residue class mod 2^R
+- Second-moment / Borel-Cantelli argument
+
+This would be a **publishable result** in the Tao/Terras/Korec tradition.
+
 ### What Would Constitute Progress
 
 - Prove RTD for small fixed R (e.g., R=3,4)
 - Formalize the LTE connection to return times
-- Prove "almost all" RTD (weaker but rigorous)
+- **Prove "averaged RTD" in log density** ← GPT's recommendation
 - Find explicit counterexamples to RTD (if it's false)
 
 ---
@@ -180,7 +204,7 @@ The 2-adic extension of Collatz is conjugate to a Bernoulli shift (maximally cha
 
 ---
 
-*Started: 2026-01-31 | Latest: 2026-02-01*  
+*Started: 2026-01-31 | Latest: 2026-02-02*  
 *By [@KLIEBHAN](https://github.com/KLIEBHAN) with AI assistance (Claude + GPT)*
 
 🦞 *"Sometimes proving something CANNOT work is the breakthrough."*
