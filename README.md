@@ -98,20 +98,26 @@ Refueling is exponentially expensive. The "sin" (too many a=1) is paid for by th
 ```
 collatz-patterns/
 ├── src/
-│   ├── refuel_test.py          # Visual refueling analysis
-│   ├── test_lemma_k.py         # Lemma (K) verification
-│   ├── noise_floor_test.py     # Bulk = ideal test
-│   └── ...
+│   ├── core/                   # Main analysis scripts
+│   │   ├── test_lemma_k.py     # Lemma (K) verification
+│   │   ├── rtd_analysis.py     # RTD empirical validation
+│   │   ├── refuel_test.py      # Visual refueling analysis
+│   │   ├── noise_floor_test.py # Bulk = ideal test
+│   │   └── compute_psi.py      # ψ computation
+│   ├── analysis/               # Extended analysis tools
+│   │   ├── transition_heatmap.py
+│   │   └── ...
+│   ├── experiments/            # Fourier & experimental scripts
+│   └── archive/                # Superseded/killed scripts
 ├── docs/
-│   ├── findings.md             # Complete experimental log
 │   ├── theory.md               # Mathematical framework
-│   ├── gpt-deep-research-2026-02-02.md  # GPT 5.2 Pro analysis
-│   └── experiments/            # Detailed analyses
-│       ├── gpt-no-conspiracy-impossible-*.md
-│       ├── gpt-key-lemma-attack-vectors-*.md
-│       ├── gpt-key-lemma-deep-analysis-*.md
-│       └── lemma-k-empirical-analysis-*.md
-└── data/                       # Generated plots & results
+│   ├── theory_layman.md        # Accessible explanation
+│   ├── findings.md             # Complete experimental log
+│   ├── gpt-deep-research-*.md  # GPT Deep Research analyses
+│   └── experiments/            # Detailed experiment docs
+├── data/                       # Generated results & plots
+├── drafts/                     # Post drafts (Moltbook etc.)
+└── paper/                      # Formal paper draft
 ```
 
 ---
@@ -125,9 +131,10 @@ python -m venv .venv && source .venv/bin/activate
 pip install numpy scipy matplotlib
 
 # Key experiments
-python src/test_lemma_k.py       # Test Lemma (K)
-python src/refuel_test.py        # Visualize refueling
-python src/noise_floor_test.py   # Verify bulk is noise
+python src/core/test_lemma_k.py       # Test Lemma (K)
+python src/core/rtd_analysis.py       # RTD validation
+python src/core/refuel_test.py        # Visualize refueling
+python src/core/noise_floor_test.py   # Verify bulk is noise
 ```
 
 ---
